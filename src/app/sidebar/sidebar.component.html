@@ -1,0 +1,94 @@
+<md-toolbar>
+  <img src="../../assets/green-dot.png" class="logo-image">
+  <span class="logo">Beyond Adventurelogue</span>
+  <img *ngIf="(af.auth | async)?.uid" src="{{ (af.auth | async)?.auth.photoURL }}" class="profile-image" [mdMenuTriggerFor]="menu">
+  <md-menu #menu="mdMenu">
+    <button md-menu-item (click)="filterByCurrentUser()">My Profile</button>
+    <button md-menu-item (click)="logout()">Logout</button>
+  </md-menu>
+  <button *ngIf="!(af.auth | async)?.uid" md-raised-button (click)="login()" class="login">Login</button>
+  <button *ngIf="(af.auth | async)?.uid" md-raised-button (click)="togglePostForm()" class="alt">
+    <span *ngIf="showForm !== true">Add a Location</span>
+    <span *ngIf="showForm === true">Hide</span>
+  </button>
+</md-toolbar>
+
+<md-sidenav
+  class="md-sidenav-left"
+  md-component-id="left"
+  md-disable-backdrop
+  md-is-locked-open="true"
+  md-is-open="true"
+  md-whiteframe="4"
+  [ngClass]="{ 'full-height': showReset || searchTerm || showForm }">
+
+  <add-form></add-form>
+
+  <div class="clearfix"></div>
+
+  <div class="search-container" *ngIf="!showCurrentUserProfile">
+    <md-input-container class="search-posts">
+      <input mdInput placeholder="Search Locations" [(ngModel)]="searchTerm">
+    </md-input-container>
+    <md-icon class="sort" [mdMenuTriggerFor]="sort">sort</md-icon>
+    <md-menu #sort="mdMenu">
+      <button md-menu-item (click)="changeOrder('-published')" [ngClass]="{ 'highlight-text': orderValue === '-published' }">Newest Posts</button>
+      <button md-menu-item (click)="changeOrder('-likesTotal')" [ngClass]="{ 'highlight-text': orderValue === '-likesTotal' }">Popular Posts</button>
+    </md-menu>
+  </div>
+
+  <div
+    class="text-center reset-posts"
+    *ngIf="showReset || (searchTerm && searchTerm !== '')"
+    (click)="resetPosts()"
+    [ngClass]="{ 'visible': showReset || (searchTerm && searchTerm !== ''), 'move-up': showCurrentUserProfile }">
+      View All Posts
+  </div>
+
+  <div
+    class="posts-container"
+    [ngClass]="{ 'push-down': showReset || searchTerm, 'visible': showReset || searchTerm, 'push-down-slightly': showCurrentUserProfile }">
+
+    <div *ngIf="!showCurrentUserProfile" class="full-list">
+      <h2 class="headline" *ngIf="filterBy === 'user' || filterBy === 'location'">
+        <span *ngIf="filterBy === 'user'"><img src="{{ (users | async | get: currentUserId)?.photoURL }}"> {{ currentUserName | lastNamePipe }}</span>
+        <div class="user-likes" *ngIf="filterBy === 'user'"><md-icon class="active">star</md-icon> {{ selectedUserLikedCount }} likes total</div>
+        <span *ngIf="filterBy === 'location'"><md-icon>location_on</md-icon> {{ globalService.currentLocation }}</span>
+        <!--<span *ngIf="filterBy === 'tag'"><img src="../../assets/tags/{{ globalService.currentTag | slugify }}.jpg"> {{ globalService.currentTag }}</span>-->
+      </h2>
+      <md-card *ngFor="let post of filteredPosts | async | search: searchTerm | orderBy: [orderValue]" class="post-card">
+        <post-card [post]="post"></post-card>
+      </md-card>
+    </div>
+
+    <h2 class="headline" *ngIf="showCurrentUserProfile">
+      <img *ngIf="(af.auth | async)?.uid" src="{{ (af.auth | async)?.auth.photoURL }}"> My Profile
+      <div class="user-likes"><md-icon class="active">star</md-icon> {{ totalCurrentUserLikes }} likes total</div>
+    </h2>
+    <md-tab-group *ngIf="showCurrentUserProfile">
+      <md-tab label="My Posts ({{ currentUserPostCount }})">
+        <div *ngIf="(userPosts | async)">
+          <md-card *ngFor="let post of userPosts | async" class="post-card">
+            <post-card [post]="post.$key"></post-card>
+          </md-card>
+        </div>
+
+        <h5 class="text-center" *ngIf="(!(userPosts | async) || (userPosts | async)?.length === 0)">
+          You haven't created any posts!
+        </h5>
+      </md-tab>
+      <md-tab label="Liked Posts ({{ currentUserLikedCount }})">
+        <div *ngIf="(userLikedPosts | async)">
+          <md-card *ngFor="let post of userLikedPosts | async" class="post-card">
+            <post-card [post]="post.$key"></post-card>
+          </md-card>
+        </div>
+
+        <h5 class="text-center" *ngIf="(!(userLikedPosts | async) || (userLikedPosts | async)?.length === 0)">
+          You haven't liked any posts!
+        </h5>
+      </md-tab>
+    </md-tab-group>
+
+  </div>
+</md-sidenav>

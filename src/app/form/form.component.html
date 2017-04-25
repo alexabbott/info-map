@@ -1,0 +1,30 @@
+<div class="form-container" [ngClass]="{'push-down': showForm === true, 'slide-up': slideFormUp === true }">
+  <md-input-container class="md-block">
+    <input mdInput placeholder="City + Country" type="text" id="autocomplete" [(ngModel)]="newLocation" />
+  </md-input-container>
+  <md-input-container class="md-block">
+    <input mdInput placeholder="Location tip" type="text" id="tip" [(ngModel)]="newTip" />
+  </md-input-container>
+  <!--<md-select placeholder="Post tag" [(ngModel)]="newTag">
+    <md-option *ngFor="let tag of tags" [value]="tag.value">
+      {{ tag.value }}
+    </md-option>
+  </md-select>-->
+
+  <md-input-container class="md-block no-height">
+    <input mdInput placeholder="Location Coordinates" type="text" id="coordinates" disabled [(ngModel)]="newCoordinates" />
+  </md-input-container>
+  <button
+    md-raised-button
+    *ngIf="!postKey"
+    (click)="addPost(newLocation, newCoordinates, newTip)"
+    [ngClass]="{ 'disabled-button': !newLocation || !newCoordinates || !newTip }"
+    class="save-post">Submit Location</button>
+  <button
+    md-raised-button
+    *ngIf="postKey"
+    (click)="updatePost(postKey, newLocation, newCoordinates, newTip)"
+    [ngClass]="{ 'disabled-button': !newLocation || !newCoordinates || !newTip }"
+    class="update-post">Update Location</button>
+</div>
+

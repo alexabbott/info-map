@@ -1,0 +1,16 @@
+{
+  "rules": {
+    ".read": true,
+    ".write": "auth != null",
+    "posts": {
+      ".indexOn": ["user", "tip", "location"],
+      "$postid": {
+        ".read": true,
+        ".write": "auth != null && (!data.exists() || data.child('user').val() === auth.uid) && newData.hasChild('user')",
+        "user": {
+          ".write": "newData.val() === auth.uid"
+        }
+      }
+    }
+  }
+}

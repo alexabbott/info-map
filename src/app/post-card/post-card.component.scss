@@ -1,0 +1,87 @@
+@import '../../variables';
+
+.post-card {
+  @extend %transition;
+  position: relative;
+  transition-property: height;
+}
+
+.post-name {
+  color: $color-main;
+  float: left;
+  font-size: 22px;
+  width: 100%;
+}
+
+// .post-tag {
+//   background: $color-highlight;
+//   border-radius: 5px;
+//   color: $color-white;
+//   cursor: pointer;
+//   float: right;
+//   font-size: 12px;
+//   margin-top: -25px;
+//   padding: 3px 5px;
+// }
+
+.post-location {
+  color: $color-grey;
+  cursor: pointer;
+  float: right;
+  font-size: 12px;
+  margin-top: 10px;
+}
+
+.post-likes {
+  color: $color-grey;
+  float: left;
+  font-size: 12px;
+  margin-top: 10px;
+}
+
+.post-date {
+  color: $color-grey;
+  float: left;
+  font-size: 12px;
+  margin-top: 10px;
+}
+
+.post-user {
+  color: $color-grey;
+  cursor: pointer;
+  float: right;
+  font-size: 12px;
+  margin-top: 10px;
+
+  img {
+    border-radius: 50%;
+    margin-top: -3px;
+    vertical-align: middle;
+    width: 20px;
+  }
+}
+
+.active {
+  color: $color-gold;
+}
+
+md-icon {
+  color: $color-grey-light;
+  cursor: pointer;
+  font-size: 21px;
+  margin-right: -4px;
+  vertical-align: middle;
+}
+
+.delete-post {
+  cursor: pointer;
+  display: block;
+  font-size: 0.8em;
+  margin: 10px 0 -15px 0;
+  text-align: right;
+
+  md-icon {
+    color: $color-main;
+    opacity: .2;
+  }
+}

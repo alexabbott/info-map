@@ -1,0 +1,60 @@
+@import '../../variables';
+
+.form-container {
+  @extend %transition;
+  background: $color-white;
+  box-sizing: border-box;
+  height: calc(100vh - 64px);
+  overflow: scroll;
+  padding: 15px 15px 80px 15px;
+  position: absolute;
+  transform: translate3d(0, -95vh, 0);
+  transition-property: transform;
+  width: 100%;
+  z-index: 2;
+
+  @include tablet {
+    border-right: 1px solid $color-main;
+    padding: 15px;
+    width: 30%;
+  }
+
+  &.push-down {
+    transform: translate3d(0, 0, 0);
+
+    @include tablet {
+      transform: translate3d(0, 64px, 0);
+    }
+  }
+
+  &.slide-up {
+    transform: translate3d(0,-185px, 0);
+
+    @include tablet {
+      transform: translate3d(0, 64px, 0);
+    }
+  }
+}
+
+md-input-container {
+  display: block;
+}
+
+.mat-input-wrapper {
+  margin: 2em 0;
+}
+
+input {
+  display: block;
+  font-size: 1em;
+  height: 20px;
+  padding: 5px 10px;
+  width: 100%;
+}
+
+.save-post,
+.update-post {
+  @extend %transition;
+  transition-property: opacity;
+  width: 100%;
+}
