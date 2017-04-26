@@ -11,6 +11,7 @@ import { GlobalService } from '../services/global.service';
 export class SidebarComponent {
   map: any;
   filteredPosts: FirebaseListObservable<any[]>;
+  filteredUsers: FirebaseListObservable<any[]>;
   user: FirebaseObjectObservable<any>;
   userPosts: FirebaseListObservable<any[]>;
   usersPosts: FirebaseListObservable<any[]>;
@@ -34,6 +35,7 @@ export class SidebarComponent {
   showLocationPosts: boolean;
   // showTagPosts: boolean;
   showUserProfile: boolean;
+  searchLabel: string;
 
   constructor(public af: AngularFire, public globalService: GlobalService) {
     this.orderValue = '-published';
@@ -45,6 +47,7 @@ export class SidebarComponent {
     this.totalCurrentUserLikes = 0;
     this.currentUserPostCount = 0;
     this.currentUserLikedCount = 0;
+    this.searchLabel = 'destinations';
 
     let me = this;
 
@@ -107,6 +110,7 @@ export class SidebarComponent {
         });
         this.selectedUserLikedCount = 0;
         this.changeOrder('-published');
+        this.searchLabel = 'destinations';
         this.filteredPosts.subscribe(post => {
           this.selectedUserPostCount = post.length;
           for (let i = 0; i < this.selectedUserPostCount; i++) {
@@ -122,6 +126,7 @@ export class SidebarComponent {
       if (location) {
         this.showCurrentUserProfile = false;
         this.changeOrder('-likesTotal');
+        this.searchLabel = 'destinations';
         this.filteredPosts = af.database.list('/posts', {
           query: {
             orderByChild: 'location',
@@ -168,6 +173,7 @@ export class SidebarComponent {
     this.map.setZoom(3);
     this.searchTerm = '';
     this.changeOrder('-published');
+    this.searchLabel = 'destinations';
   }
 
   changeOrder(neworder) {
@@ -178,5 +184,26 @@ export class SidebarComponent {
     this.showReset = true;
     this.showMenu = false;
     this.showCurrentUserProfile = true;
+    this.globalService.filterBy.next('currentUser');
+  }
+
+  showNewestPosts() {
+    this.searchLabel = 'destinations';
+    this.filteredPosts = this.af.database.list('/posts');
+    this.changeOrder('-published');
+  }
+
+  showPopularPosts() {
+    this.searchLabel = 'destinations';
+    this.filteredPosts = this.af.database.list('/posts');
+    this.changeOrder('-likesTotal');
+  }
+
+  showTopUsers() {
+    this.searchLabel = 'users';
+    this.showReset = true;
+    this.globalService.filterBy.next('topUsers');
+    this.filteredPosts = this.af.database.list('/users');
+    this.changeOrder('-posts_count');
   }
 }

@@ -2,9 +2,7 @@
   <md-input-container class="md-block">
     <input mdInput placeholder="City + Country" type="text" id="autocomplete" [(ngModel)]="newLocation" />
   </md-input-container>
-  <md-input-container class="md-block">
-    <input mdInput placeholder="Location tip" type="text" id="tip" [(ngModel)]="newTip" />
-  </md-input-container>
+  <textarea maxlength="140" placeholder="Location tip" type="text" id="tip" [(ngModel)]="newTip"></textarea>
   <!--<md-select placeholder="Post tag" [(ngModel)]="newTag">
     <md-option *ngFor="let tag of tags" [value]="tag.value">
       {{ tag.value }}

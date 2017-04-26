@@ -11,8 +11,8 @@ md-toolbar {
   z-index: 4;
 
   @include tablet {
-    border-right: 1px solid $color-main;
-    width: 30%;
+    border-right: 1px solid $color-grey;
+    width: 35%;
   }
 
   button {
@@ -93,11 +93,11 @@ md-toolbar {
 
   @include tablet {
     background: $color-white;
-    border-right: 1px solid $color-main;
+    border-right: 1px solid $color-grey;
     border-top: 0;
     height: 100vh;
     position: static;
-    width: 30%;
+    width: 35%;
     z-index: 0;
   }
 
@@ -119,10 +119,10 @@ md-toolbar {
   z-index: 1;
 
   @include tablet {
-    border-right: 1px solid $color-main;
+    border-right: 1px solid $color-grey;
     border-top: 0;
     top: 64px;
-    width: 30%;
+    width: 35%;
   }
 
   .search-posts {
@@ -146,7 +146,7 @@ md-toolbar {
 
 .reset-posts {
   background: $color-grey-lighter;
-  bottom: 77px;
+  bottom: 28px;
   box-shadow: 0 3px 5px -1px rgba($color-black, .2);
   box-sizing: border-box;
   color: $color-main;
@@ -175,7 +175,7 @@ md-toolbar {
     left: 2%;
     opacity: 1;
     top: auto;
-    width: 26%;
+    width: 31%;
   }
 }
 
@@ -205,7 +205,7 @@ md-toolbar {
     transform: translate3d(0, 110px, 0);
 
     @include tablet {
-      height: calc(100vh - 274px);
+      height: calc(100vh - 227px);
       transform: translate3d(0, 134px, 0);
     }
   }

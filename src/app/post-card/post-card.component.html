@@ -1,33 +1,56 @@
 <div class="post-card">
-  <div class="post-likes">
-    <span *ngIf="(user | async)?.uid" class="like-controls">
-      <md-icon
-        (click)="unlikePost(post)"
-        class="active"
-        *ngIf="(userLikes | async) && (userLikes | async | get: post.$key)">
-        star
-      </md-icon>
-      <md-icon
-        (click)="likePost(post)"
-        *ngIf="!(userLikes | async) || !(userLikes | async | get: post.$key)">
-        star
-      </md-icon>
-    </span>
-    <span *ngIf="!post.likesTotal && post.likesTotal !== 0">0</span>{{ post.likesTotal }} like<span *ngIf="post.likesTotal > 1 || post.likesTotal === 0 || !post.likesTotal">s</span>
-  </div>
-  <div class="post-location" (click)="filterByLocation(post.location, post.coordinates)">
-    <md-icon>location_on</md-icon> {{ post.location }}
-  </div>
-  <div class="clearfix"></div>
-  <div class="post-date">
-    <md-icon>event</md-icon> {{ post.published | date: 'mediumDate' }}
-  </div>
-  <div class="post-user" (click)="filterByUser(post.user, post.userName)">
-    <img src="{{ (users | async | get: post.user)?.photoURL }}"> {{ (users | async | get: post.user)?.name | lastNamePipe }}
-  </div>
-  <div class="clearfix"></div>
-  <div class="delete-post" *ngIf="post.user === (user | async)?.uid" >
-    <md-icon (click)="updatePost(post.$key, post.location, post.tip, post.coordinates)">mode_edit</md-icon>
-    <md-icon (click)="deletePost(post.$key, post.location)">delete</md-icon>
-  </div>
+
+
+  <span *ngIf="post.name">
+    <div class="user-photo">
+      <img src="{{ post.photoURL }}" *ngIf="post.photoURL">
+    </div>
+    <div class="user-info">
+      {{ post.name | lastNamePipe }}
+      <div class="post-count">
+        <md-icon>location_on</md-icon> {{ post.posts_count }} destinations
+      </div>
+    </div>
+    <div class="profile-button">
+      <button md-button class="alt" (click)="filterByUser(post.$key, post.name)">View Profile</button>
+    </div>
+  </span>
+
+
+  <span *ngIf="!post.name">
+    <div class="post-location" (click)="filterByLocation(post.location, post.coordinates)" *ngIf="filterBy !== 'location'">
+      <md-icon>location_on</md-icon> {{ post.location }}
+    </div>
+    <div class="post-user" (click)="filterByUser(post.user, post.userName)" *ngIf="filterBy !== 'user'" [ngClass]="{ 'float-left': filterBy === 'location' }">
+      <img src="{{ (users | async | get: post.user)?.photoURL }}"> {{ (users | async | get: post.user)?.name | lastNamePipe }}
+    </div>
+    <div class="clearfix"></div>
+    <div class="post-likes">
+      <span *ngIf="(user | async)?.uid" class="like-controls">
+        <md-icon
+          (click)="unlikePost(post)"
+          class="active"
+          *ngIf="(userLikes | async) && (userLikes | async | get: post.$key)">
+          star
+        </md-icon>
+        <md-icon
+          (click)="likePost(post)"
+          *ngIf="!(userLikes | async) || !(userLikes | async | get: post.$key)">
+          star
+        </md-icon>
+      </span>
+      <span *ngIf="!post.likesTotal && post.likesTotal !== 0">0</span>{{ post.likesTotal }} like<span *ngIf="post.likesTotal > 1 || post.likesTotal === 0 || !post.likesTotal">s</span>
+    </div>
+    <div class="post-date">
+      <md-icon>event</md-icon> {{ post.published | date: 'mediumDate' }}
+    </div>
+    <div class="clearfix"></div>
+    <div class="post-tip">
+      {{ post.tip }}
+    </div>
+    <div class="delete-post" *ngIf="post.user === (user | async)?.uid" >
+      <md-icon (click)="updatePost(post.$key, post.location, post.tip, post.coordinates)">mode_edit</md-icon>
+      <md-icon (click)="deletePost(post.$key, post.location)">delete</md-icon>
+    </div>
+  </span>
 </div>

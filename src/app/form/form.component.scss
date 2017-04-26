@@ -14,9 +14,9 @@
   z-index: 2;
 
   @include tablet {
-    border-right: 1px solid $color-main;
+    border-right: 1px solid $color-grey;
     padding: 15px;
-    width: 30%;
+    width: 35%;
   }
 
   &.push-down {
@@ -38,6 +38,20 @@
 
 md-input-container {
   display: block;
+}
+
+textarea {
+  border: 0;
+  border-bottom: 1px solid $color-highlight;
+  display: block;
+  font-size: 1em;
+  height: auto;
+  margin-bottom: 30px;
+  width: 100%;
+
+  &:focus {
+    outline: 0;
+  }
 }
 
 .mat-input-wrapper {

@@ -25,11 +25,14 @@
 // }
 
 .post-location {
-  color: $color-grey;
   cursor: pointer;
-  float: right;
-  font-size: 12px;
+  float: left;
+  font-size: 1em;
   margin-top: 10px;
+
+  md-icon {
+    color: $color-highlight;
+  }
 }
 
 .post-likes {
@@ -41,24 +44,32 @@
 
 .post-date {
   color: $color-grey;
-  float: left;
+  float: right;
   font-size: 12px;
   margin-top: 10px;
 }
 
 .post-user {
-  color: $color-grey;
   cursor: pointer;
   float: right;
-  font-size: 12px;
+  font-size: 1em;
   margin-top: 10px;
+
+  &.float-left {
+    float: left;
+  }
 
   img {
     border-radius: 50%;
     margin-top: -3px;
     vertical-align: middle;
-    width: 20px;
+    width: 30px;
   }
+}
+
+.post-tip {
+  color: darken($color-grey, 20%);
+  padding: 10px 5px 0 5px;
 }
 
 .active {
@@ -84,4 +95,36 @@ md-icon {
     color: $color-main;
     opacity: .2;
   }
+}
+
+.user-photo {
+  display: inline-block;
+  width: 70px;
+
+  img {
+    border-radius: 50%;
+    vertical-align: middle;
+    width: 65px;
+  }
+}
+
+.user-info {
+  display: inline-block;
+  width: calc(100% - 190px);
+  vertical-align: middle;
+
+  .post-count {
+    color: $color-grey;
+    font-size: .8em;
+
+    md-icon {
+      font-size: 1.3em;
+      margin: 6px -9px 0 -5px;
+    }
+  }
+}
+
+.profile-button {
+  display: inline-block;
+  width: 110px;
 }

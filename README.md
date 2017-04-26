@@ -1,6 +1,6 @@
 # Beyond Map
 
-Beyond Map allows user to discover and create location-based posts. This app is build with [https://angular.io/] (Angular 4) and [https://github.com/angular/angularfire2] (AngularFire2), and was initially generated with [https://github.com/angular/angular-cli] (Angular CLI).
+Beyond Map allows users to discover and create location-based posts. This app is build with [https://angular.io/] (Angular 4) and [https://github.com/angular/angularfire2] (AngularFire2), and was initially generated with [https://github.com/angular/angular-cli] (Angular CLI).
 
 ## Installation
 

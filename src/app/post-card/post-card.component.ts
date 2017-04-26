@@ -24,6 +24,7 @@ export class PostCardComponent implements OnInit {
   openPost: string;
   dialogRef: MdDialogRef<any>;
   selectedOption: string;
+  filterBy: string;
 
   constructor(public af: AngularFire, public globalService: GlobalService, public snackBar: MdSnackBar, public dialog: MdDialog) {
     this.users = af.database.object('/users');
@@ -37,6 +38,10 @@ export class PostCardComponent implements OnInit {
           // console.log('thieuser', user);
         });
       }
+    });
+
+    this.globalService.filterBy.subscribe(filter => {
+      this.filterBy = filter;
     });
   }
 
@@ -58,7 +63,7 @@ export class PostCardComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       this.selectedOption = result;
       if (this.selectedOption === 'delete') {
-        this.filteredPosts.remove(key);
+        this.af.database.list('/posts').remove(key);
         this.af.database.list('/user-posts/' + this.userId).remove(key);
         this.af.database.list('/location-posts/' + location).remove(key);
         let loc = this.af.database.list('/location-posts/' + location);
@@ -66,6 +71,16 @@ export class PostCardComponent implements OnInit {
           let length = subscribe.length;
           if (length === 0) {
             loc.remove(location);
+          }
+        });
+
+        let userLikesList = this.af.database.list('/user-likes');
+        userLikesList.subscribe(users => {
+          let usersLength = users.length;
+          for (let i = 0; i < usersLength; i++) {
+            if (users[i][key]) {
+              this.af.database.list('/user-likes/' + users[i].$key + '/').remove(key);
+            }
           }
         });
         this.snackBar.open('Post deleted', 'OK!', {
@@ -84,7 +99,7 @@ export class PostCardComponent implements OnInit {
       this.af.database.object('/posts/' + post.$key).update({ likesTotal: length });
     });
 
-    this.snackBar.open('Liked ' + post.name, 'OK!', {
+    this.snackBar.open('Liked post', 'OK!', {
       duration: 2000,
     });
   }
@@ -98,7 +113,7 @@ export class PostCardComponent implements OnInit {
       this.af.database.object('/posts/' + post.$key).update({ likesTotal: length });
     });
 
-    this.snackBar.open('Unliked ' + post.name, 'OK!', {
+    this.snackBar.open('Unliked post', 'OK!', {
       duration: 2000,
     });
   }

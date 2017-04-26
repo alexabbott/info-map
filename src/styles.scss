@@ -61,7 +61,7 @@ body {
 }
 
 .mat-input-placeholder {
-  color: $color-grey;
+  color: $color-grey-mid;
 }
 
 .text-center {
@@ -141,5 +141,11 @@ snack-bar-container {
 
   @include tablet {
     display: none !important;
+  }
+}
+
+.my-posts {
+  .post-user {
+    display: none;
   }
 }
