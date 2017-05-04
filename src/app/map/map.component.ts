@@ -50,8 +50,10 @@ export class MapComponent {
       this.markers = [];
       this.markerCount = locations.length;
       for (let i = 0; i < this.markerCount; ++i ){
-        let coordinatesArray = locations[i][Object.keys(locations[i])[0]].coordinates.split(',');
-        this.markers.push({ city: locations[i][Object.keys(locations[i])[0]].location, coordinates: {lat: parseFloat(coordinatesArray[0]), lng: parseFloat(coordinatesArray[1].trim())}});
+        if (locations[i][Object.keys(locations[i])[0]].location && locations[i][Object.keys(locations[i])[0]].coordinates) {
+          let coordinatesArray = locations[i][Object.keys(locations[i])[0]].coordinates.split(',');
+          this.markers.push({ city: locations[i][Object.keys(locations[i])[0]].location, coordinates: {lat: parseFloat(coordinatesArray[0]), lng: parseFloat(coordinatesArray[1].trim())}});
+        }
       }
       if (!this.map) {
         this.map = new google.maps.Map(document.getElementById('map'), this.mapOptions);
@@ -121,24 +123,26 @@ export class MapComponent {
     let me = this;
     this.googleMarkers = [];
     for (let i = 0; i < this.markerCount; ++i ){
-      let newMarker: any = new google.maps.Marker({
-        position: this.markers[i].coordinates,
-        title: this.markers[i].city,
-        map: me.map,
-        icon: '../../assets/green-dot.png'
-      });
-      this.googleMarkers.push(newMarker);
-      newMarker.addListener('click', function() {
-        me.zone.run(() => {
-          me.showReset = true;
-          me.map.setCenter({lat: newMarker.position.lat(), lng: newMarker.position.lng()});
-          me.map.setZoom(6);
-          me.globalService.filterBy.next('location');
-          me.globalService.locationPosts.next(newMarker.title);
-          me.globalService.showLocationPosts.next(true);
-          me.globalService.updateReset();
+      if (this.markers[i]) {
+        let newMarker: any = new google.maps.Marker({
+          position: this.markers[i].coordinates,
+          title: this.markers[i].city,
+          map: me.map,
+          icon: '../../assets/green-dot.png'
         });
-      });
+        this.googleMarkers.push(newMarker);
+        newMarker.addListener('click', function() {
+          me.zone.run(() => {
+            me.showReset = true;
+            me.map.setCenter({lat: newMarker.position.lat(), lng: newMarker.position.lng()});
+            me.map.setZoom(6);
+            me.globalService.filterBy.next('location');
+            me.globalService.locationPosts.next(newMarker.title);
+            me.globalService.showLocationPosts.next(true);
+            me.globalService.updateReset();
+          });
+        });
+      }
     }
   }
 

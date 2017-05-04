@@ -27,7 +27,7 @@
   <div class="clearfix"></div>
 
   <div class="search-container" *ngIf="!showCurrentUserProfile">
-    <md-input-container class="search-posts">
+    <md-input-container floatPlaceholder="never" class="search-posts">
       <input mdInput placeholder="Search {{ searchLabel }}" [(ngModel)]="searchTerm">
     </md-input-container>
     <md-icon class="sort" [mdMenuTriggerFor]="sort">sort</md-icon>
@@ -46,9 +46,12 @@
       View All Posts
   </div>
 
+
   <div
     class="posts-container"
     [ngClass]="{ 'push-down': showReset || searchTerm, 'visible': showReset || searchTerm, 'push-down-slightly': showCurrentUserProfile }">
+
+    <div class="text-center no-results" *ngIf="searchTerm && searchTerm !== '' && !showCurrentUserProfile && (filteredPosts | async | search: searchTerm)?.length === 0">No search results</div>
 
     <div *ngIf="!showCurrentUserProfile" class="full-list">
       <h2 class="headline" *ngIf="filterBy === 'user' || filterBy === 'location'">
