@@ -100,10 +100,10 @@ export class FormComponent {
     //   newTag = '';
     // }
     if (newLocation && newCoordinates && newTip && newDate) {
-      var coordinateArray = newCoordinates.split(',');
       let newKey = this.hashCode(newLocation) + newDate.toString();
-      this.af.database.object('/posts/' + newKey).update({ location: newLocation, coordinates: newCoordinates, tip: newTip, user: this.user.uid, userName: this.user.displayName, published: newDate, likesTotal: 0 });
-      this.af.database.object('/location-posts/' + newLocation + '/' + newKey).update({ location: newLocation, coordinates: newCoordinates });
+      this.af.database.object('/posts/' + newKey).update({ location: newLocation, tip: newTip, user: this.user.uid, userName: this.user.displayName, published: newDate, likesTotal: 0 });
+      this.af.database.object('/location-posts/' + newLocation + '/posts/' + newKey).set(Date.now());
+      this.af.database.object('/location-posts/' + newLocation).update({ coordinates: newCoordinates });
       this.af.database.object('/user-posts/' + this.user.uid + '/' + newKey).set(Date.now());
 
       this.newLocation = '';
@@ -123,9 +123,9 @@ export class FormComponent {
     let d = new Date();
     let newDate = d.getTime();
     if (newLocation && newCoordinates && newTip && newDate) {
-      var coordinateArray = newCoordinates.split(',');
-      this.af.database.object('/posts/' + key).update({ location: newLocation, coordinates: newCoordinates, tip: newTip, published: newDate });
-      this.af.database.object('/location-posts/' + newLocation + '/' + key).update({ location: newLocation, coordinates: newCoordinates });
+      this.af.database.object('/posts/' + key).update({ location: newLocation, tip: newTip, published: newDate });
+      this.af.database.object('/location-posts/' + newLocation + '/posts/' + key).set(Date.now());
+      this.af.database.object('/location-posts/' + newLocation).update({ coordinates: newCoordinates });
       this.af.database.object('/user-posts/' + this.user.uid + '/' + key).set(Date.now());
 
       this.newLocation = '';

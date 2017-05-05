@@ -65,12 +65,12 @@ export class PostCardComponent implements OnInit {
       if (this.selectedOption === 'delete') {
         this.af.database.list('/posts').remove(key);
         this.af.database.list('/user-posts/' + this.userId).remove(key);
-        this.af.database.list('/location-posts/' + location).remove(key);
-        let loc = this.af.database.list('/location-posts/' + location);
-        loc.subscribe(subscribe => {
-          let length = subscribe.length;
+        this.af.database.list('/location-posts/' + location + '/posts').remove(key);
+        let loc = this.af.database.list('/location-posts/' + location + '/posts');
+        loc.subscribe(posts => {
+          let length = posts.length;
           if (length === 0) {
-            loc.remove(location);
+            this.af.database.list('/location-posts/').remove(location);
           }
         });
 

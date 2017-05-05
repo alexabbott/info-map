@@ -50,9 +50,9 @@ export class MapComponent {
       this.markers = [];
       this.markerCount = locations.length;
       for (let i = 0; i < this.markerCount; ++i ){
-        if (locations[i][Object.keys(locations[i])[0]].location && locations[i][Object.keys(locations[i])[0]].coordinates) {
-          let coordinatesArray = locations[i][Object.keys(locations[i])[0]].coordinates.split(',');
-          this.markers.push({ city: locations[i][Object.keys(locations[i])[0]].location, coordinates: {lat: parseFloat(coordinatesArray[0]), lng: parseFloat(coordinatesArray[1].trim())}});
+        if (locations[i] && locations[i].coordinates) {
+          let coordinatesArray = locations[i].coordinates.split(',');
+          this.markers.push({ city: locations[i].$key, coordinates: {lat: parseFloat(coordinatesArray[0]), lng: parseFloat(coordinatesArray[1].trim())}});
         }
       }
       if (!this.map) {
