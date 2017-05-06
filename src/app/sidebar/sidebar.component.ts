@@ -206,4 +206,12 @@ export class SidebarComponent {
     this.filteredPosts = this.af.database.list('/users');
     this.changeOrder('-posts_count');
   }
+
+  showTopDestinations() {
+    this.searchLabel = 'destinations';
+    this.showReset = true;
+    this.globalService.filterBy.next('topDestinations');
+    this.filteredPosts = this.af.database.list('/location-posts');
+    this.changeOrder('-posts_count');
+  }
 }

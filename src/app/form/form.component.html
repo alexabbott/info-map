@@ -1,8 +1,8 @@
 <div class="form-container" [ngClass]="{'push-down': showForm === true, 'slide-up': slideFormUp === true }">
-  <md-input-container class="md-block">
+  <md-input-container class="md-block" floatPlaceholder="never">
     <input mdInput placeholder="City + Country" type="text" id="autocomplete" [(ngModel)]="newLocation" />
   </md-input-container>
-  <textarea maxlength="140" placeholder="Location tip" type="text" id="tip" [(ngModel)]="newTip"></textarea>
+  <textarea maxlength="140" placeholder="Location tip (140 characters max)" type="text" id="tip" [(ngModel)]="newTip"></textarea>
   <!--<md-select placeholder="Post tag" [(ngModel)]="newTag">
     <md-option *ngFor="let tag of tags" [value]="tag.value">
       {{ tag.value }}

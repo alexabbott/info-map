@@ -16,8 +16,20 @@
     </div>
   </span>
 
+  <span *ngIf="post.posts">
+    <div class="user-info">
+      <md-icon class="location-icon">location_on</md-icon> {{ post.$key }}
+      <div class="post-count">
+        <md-icon>user</md-icon> {{ post.posts_count }} users
+      </div>
+    </div>
+    <div class="profile-button">
+      <button md-button class="alt" (click)="filterByLocation(post.$key, post.coordinates)">View Destination</button>
+    </div>
+  </span>
 
-  <span *ngIf="!post.name">
+
+  <span *ngIf="post.tip">
     <div class="post-location" (click)="filterByLocation(post.location, post.coordinates)" *ngIf="filterBy !== 'location'">
       <md-icon>location_on</md-icon> {{ post.location }}
     </div>

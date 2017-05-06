@@ -41,12 +41,14 @@ md-input-container {
 }
 
 textarea {
-  border: 0;
-  border-bottom: 1px solid $color-highlight;
+  border: 1px solid $color-highlight;
+  border-radius: 5px;
+  box-sizing: border-box;
   display: block;
   font-size: 1em;
-  height: auto;
+  height: 70px;
   margin-bottom: 30px;
+  padding: 5px;
   width: 100%;
 
   &:focus {

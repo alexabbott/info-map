@@ -16,6 +16,8 @@ export class SearchPipe implements PipeTransform {
           return item.tip.toLowerCase().includes(term.toLowerCase()) || item.location.toLowerCase().includes(term.toLowerCase()) || item.userName.toLowerCase().includes(term.toLowerCase());
         } else if (item.name) {
           return item.name.toLowerCase().includes(term.toLowerCase());
+        } else if (item.posts) {
+          return item.$key.toLowerCase().includes(term.toLowerCase());
         }
       })
     }
