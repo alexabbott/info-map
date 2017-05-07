@@ -32,10 +32,10 @@
     </md-input-container>
     <md-icon class="sort" [mdMenuTriggerFor]="sort">sort</md-icon>
     <md-menu #sort="mdMenu">
-      <button md-menu-item (click)="showNewestPosts()" [ngClass]="{ 'highlight-text': orderValue === '-published' }">Newest Posts</button>
-      <button md-menu-item (click)="showPopularPosts()" [ngClass]="{ 'highlight-text': orderValue === '-likesTotal' }">Popular Posts</button>
-      <button md-menu-item (click)="showTopUsers()" [ngClass]="{ 'highlight-text': orderValue === '-posts_count' }">Top Users</button>
-      <button md-menu-item (click)="showTopDestinations()" [ngClass]="{ 'highlight-text': orderValue === '-posts_count' }">Top Destinations</button>
+      <button md-menu-item (click)="showNewestPosts()" [ngClass]="{ 'highlight-text': orderBy === 'newestPosts' }">Newest Posts</button>
+      <button md-menu-item (click)="showPopularPosts()" [ngClass]="{ 'highlight-text': orderBy === 'popularPosts' }">Popular Posts</button>
+      <button md-menu-item (click)="showTopUsers()" [ngClass]="{ 'highlight-text': orderBy === 'topUsers' && globalService.filterBy.getValue() === 'topUsers' }">Top Users</button>
+      <button md-menu-item (click)="showTopDestinations()" [ngClass]="{ 'highlight-text': orderBy === 'topDestinations' && globalService.filterBy.getValue() === 'topDestinations' }">Top Destinations</button>
     </md-menu>
   </div>
 
@@ -61,7 +61,7 @@
         <span *ngIf="filterBy === 'location'"><md-icon>location_on</md-icon> {{ globalService.currentLocation }}</span>
         <!--<span *ngIf="filterBy === 'tag'"><img src="../../assets/tags/{{ globalService.currentTag | slugify }}.jpg"> {{ globalService.currentTag }}</span>-->
       </h2>
-      <span *ngFor="let post of filteredPosts | async | search: searchTerm | orderBy: [orderValue]" >
+      <span *ngFor="let post of filteredPosts | async | search: searchTerm" >
         <md-card class="post-card">
           <post-card [post]="post"></post-card>
         </md-card>

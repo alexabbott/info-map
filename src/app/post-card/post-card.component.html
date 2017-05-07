@@ -8,7 +8,7 @@
     <div class="user-info">
       {{ post.name | lastNamePipe }}
       <div class="post-count">
-        <md-icon>location_on</md-icon> {{ post.posts_count }} destinations
+        <md-icon>location_on</md-icon> {{ post.posts_count * -1 }} destination<span *ngIf="post.posts_count !== -1">s</span>
       </div>
     </div>
     <div class="profile-button">
@@ -20,7 +20,7 @@
     <div class="user-info">
       <md-icon class="location-icon">location_on</md-icon> {{ post.$key }}
       <div class="post-count">
-        <md-icon>user</md-icon> {{ post.posts_count }} users
+        <md-icon>user</md-icon> {{ post.posts_count * -1 }} user<span *ngIf="post.posts_count !== -1">s</span>
       </div>
     </div>
     <div class="profile-button">
@@ -51,7 +51,7 @@
           star
         </md-icon>
       </span>
-      <span *ngIf="!post.likesTotal && post.likesTotal !== 0">0</span>{{ post.likesTotal }} like<span *ngIf="post.likesTotal > 1 || post.likesTotal === 0 || !post.likesTotal">s</span>
+      <span *ngIf="!post.likesTotal && post.likesTotal !== 0">0</span>{{ post.likesTotal * -1 }} like<span *ngIf="post.likesTotal < -1 || post.likesTotal === 0 || !post.likesTotal">s</span>
     </div>
     <div class="post-date">
       <md-icon>event</md-icon> {{ post.published | date: 'mediumDate' }}

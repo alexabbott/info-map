@@ -22,6 +22,8 @@ export class GlobalService {
   public currentLocation = new BehaviorSubject(null);
   public currentUserName = new BehaviorSubject(null);
   public showLocationPosts = new BehaviorSubject(false);
+  public newLocation = new BehaviorSubject(null);
+  public newCoordinates = new BehaviorSubject(null);
   // public postTag = new BehaviorSubject(null);
   // public showTagPosts = new BehaviorSubject(false);
   // public tagPosts = new BehaviorSubject(null);
@@ -30,6 +32,10 @@ export class GlobalService {
   public usersName = new BehaviorSubject(null);
   public showUserProfile = new BehaviorSubject(false);
 
+  public createMarker(location, coordinates) {
+    this.newLocation.next(location);
+    this.newCoordinates.next(coordinates);
+  }
   public updateLocation(key, value) {
     this.filterKey.next(key);
     this.filterValue.next(value);

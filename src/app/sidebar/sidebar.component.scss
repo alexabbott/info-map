@@ -219,7 +219,7 @@ md-toolbar {
     transform: translate3d(0, 40px, 0);
 
     @include tablet {
-      height: calc(100vh - 198px);
+      height: calc(100vh - 162px);
       transform: translate3d(0, 64px, 0);
     }
   }

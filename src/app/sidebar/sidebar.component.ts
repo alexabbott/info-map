@@ -18,12 +18,12 @@ export class SidebarComponent {
   userLikedPosts: FirebaseListObservable<any[]>;
   users: FirebaseObjectObservable<any>;
   userId: string;
-  orderValue: string;
   showReset: boolean;
   showForm: boolean;
   showMenu: boolean;
   searchTerm: string;
   filterBy: string;
+  orderBy: string;
   showCurrentUserProfile: boolean;
   currentUserName: string;
   currentUserId: string;
@@ -38,8 +38,12 @@ export class SidebarComponent {
   searchLabel: string;
 
   constructor(public af: AngularFire, public globalService: GlobalService) {
-    this.orderValue = '-published';
-    this.filteredPosts = af.database.list('/posts');
+    this.orderBy = 'newestPosts';
+    this.filteredPosts = af.database.list('/posts', {
+      query: {
+        orderByChild: 'rpublished',
+      }
+    });
     this.users = af.database.object('/users');
     this.showForm = false;
     this.showMenu = false;
@@ -109,7 +113,6 @@ export class SidebarComponent {
           }
         });
         this.selectedUserLikedCount = 0;
-        this.changeOrder('-published');
         this.searchLabel = 'destinations';
         this.filteredPosts.subscribe(post => {
           this.selectedUserPostCount = post.length;
@@ -125,7 +128,6 @@ export class SidebarComponent {
       globalService.currentLocation = location;
       if (location) {
         this.showCurrentUserProfile = false;
-        this.changeOrder('-likesTotal');
         this.searchLabel = 'destinations';
         this.filteredPosts = af.database.list('/posts', {
           query: {
@@ -166,18 +168,18 @@ export class SidebarComponent {
   }
 
   resetPosts() {
-    this.filteredPosts = this.af.database.list('/posts');
+    this.filteredPosts = this.af.database.list('/posts', {
+      query: {
+        orderByChild: 'rpublished',
+      }
+    });
     this.showReset = false;
     this.showCurrentUserProfile = false;
     this.globalService.filterBy.next('');
     this.map.setZoom(3);
     this.searchTerm = '';
-    this.changeOrder('-published');
     this.searchLabel = 'destinations';
-  }
-
-  changeOrder(neworder) {
-    this.orderValue = neworder;
+    this.orderBy = 'newestPosts';
   }
 
   filterByCurrentUser() {
@@ -189,29 +191,45 @@ export class SidebarComponent {
 
   showNewestPosts() {
     this.searchLabel = 'destinations';
-    this.filteredPosts = this.af.database.list('/posts');
-    this.changeOrder('-published');
+    this.filteredPosts = this.af.database.list('/posts', {
+      query: {
+        orderByChild: 'rpublished',
+      }
+    });
+    this.orderBy = 'newestPosts';
   }
 
   showPopularPosts() {
     this.searchLabel = 'destinations';
-    this.filteredPosts = this.af.database.list('/posts');
-    this.changeOrder('-likesTotal');
+    this.filteredPosts = this.af.database.list('/posts', {
+      query: {
+        orderByChild: 'likesTotal',
+      }
+    });
+    this.orderBy = 'popularPosts';
   }
 
   showTopUsers() {
     this.searchLabel = 'users';
     this.showReset = true;
     this.globalService.filterBy.next('topUsers');
-    this.filteredPosts = this.af.database.list('/users');
-    this.changeOrder('-posts_count');
+    this.filteredPosts = this.af.database.list('/users', {
+      query: {
+        orderByChild: 'posts_count',
+      }
+    });
+    this.orderBy = 'topUsers';
   }
 
   showTopDestinations() {
     this.searchLabel = 'destinations';
     this.showReset = true;
     this.globalService.filterBy.next('topDestinations');
-    this.filteredPosts = this.af.database.list('/location-posts');
-    this.changeOrder('-posts_count');
+    this.filteredPosts = this.af.database.list('/location-posts', {
+      query: {
+        orderByChild: 'posts_count',
+      }
+    });
+    this.orderBy = 'topDestinations';
   }
 }

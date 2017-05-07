@@ -55,6 +55,7 @@ export class PostCardComponent implements OnInit {
 
   updatePost(key: string, location:string, tip:string, coordinates:string) {
     this.globalService.toggleForm();
+    console.log(coordinates);
     this.globalService.setFormValues(key, location, tip, coordinates);
   }
 
@@ -96,7 +97,7 @@ export class PostCardComponent implements OnInit {
     let likes = this.af.database.list('/posts/' + post.$key + '/likes/');
     likes.subscribe(subscribe => {
       let length = subscribe.length;
-      this.af.database.object('/posts/' + post.$key).update({ likesTotal: length });
+      this.af.database.object('/posts/' + post.$key).update({ likesTotal: -1*(length) });
     });
 
     this.snackBar.open('Liked post', 'OK!', {
@@ -110,7 +111,7 @@ export class PostCardComponent implements OnInit {
     let likes = this.af.database.list('/posts/' + post.$key + '/likes/');
     likes.subscribe(subscribe => {
       let length = subscribe.length;
-      this.af.database.object('/posts/' + post.$key).update({ likesTotal: length });
+      this.af.database.object('/posts/' + post.$key).update({ likesTotal: -1*(length) });
     });
 
     this.snackBar.open('Unliked post', 'OK!', {
@@ -134,7 +135,9 @@ export class PostCardComponent implements OnInit {
   filterByLocation(loc, coo) {
     this.globalService.filterBy.next('location');
     this.globalService.locationPosts.next(loc);
-    this.globalService.updateMapCenter(coo);
+    // this.globalService.updateMapCenter(coo);
+    console.log('coo', coo);
+    this.globalService.coordinates.next(coo);
     this.globalService.updateReset();
   }
 }

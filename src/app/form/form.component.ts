@@ -101,7 +101,7 @@ export class FormComponent {
     // }
     if (newLocation && newCoordinates && newTip && newDate) {
       let newKey = this.hashCode(newLocation) + newDate.toString();
-      this.af.database.object('/posts/' + newKey).update({ location: newLocation, tip: newTip, user: this.user.uid, userName: this.user.displayName, published: newDate, likesTotal: 0 });
+      this.af.database.object('/posts/' + newKey).update({ location: newLocation, coordinates: newCoordinates, tip: newTip, user: this.user.uid, userName: this.user.displayName, published: newDate, rpublished: -1*(newDate), likesTotal: 0 });
       this.af.database.object('/location-posts/' + newLocation + '/posts/' + newKey).set(Date.now());
       this.af.database.object('/location-posts/' + newLocation).update({ coordinates: newCoordinates });
       this.af.database.object('/user-posts/' + this.user.uid + '/' + newKey).set(Date.now());
@@ -110,6 +110,8 @@ export class FormComponent {
       this.newCoordinates = '';
       this.newTip = '';
       // this.newTag = '';
+
+      this.globalService.createMarker(newLocation, newCoordinates);
 
       this.globalService.toggleForm();
 
@@ -123,7 +125,7 @@ export class FormComponent {
     let d = new Date();
     let newDate = d.getTime();
     if (newLocation && newCoordinates && newTip && newDate) {
-      this.af.database.object('/posts/' + key).update({ location: newLocation, tip: newTip, published: newDate });
+      this.af.database.object('/posts/' + key).update({ location: newLocation, coordinates: newCoordinates, tip: newTip, published: newDate, rpublished: -1*(newDate) });
       this.af.database.object('/location-posts/' + newLocation + '/posts/' + key).set(Date.now());
       this.af.database.object('/location-posts/' + newLocation).update({ coordinates: newCoordinates });
       this.af.database.object('/user-posts/' + this.user.uid + '/' + key).set(Date.now());

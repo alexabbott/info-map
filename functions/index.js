@@ -26,14 +26,14 @@ exports.countplaylistchange = functions.database.ref('/user-posts/{userid}/{post
   const collectionRef = db.ref(`/users/${event.params.userid}`);
   const countRef = collectionRef.child('posts_count');
 
-  // Return the promise from countRef.transaction() so our function 
+  // Return the promise from countRef.transaction() so our function
   // waits for this async event to complete before it exits.
   return countRef.transaction(current => {
     if (event.data.exists() && !event.data.previous.exists()) {
-      return (current || 0) + 1;
+      return (current || 0) - 1;
     }
     else if (!event.data.exists() && event.data.previous.exists()) {
-      return (current || 0) - 1;
+      return (current || 0) + 1;
     }
   }).then(() => {
     console.log('Counter updated.');
@@ -51,7 +51,7 @@ exports.recountlikes = functions.database.ref('/users/{userid}/posts_count').onW
     // Return the promise from counterRef.set() so our function 
     // waits for this async event to complete before it exits.
     return collectionRef.once('value')
-        .then(messagesData => counterRef.set(messagesData.numChildren()));
+        .then(messagesData => counterRef.set(-1*(messagesData.numChildren())));
   }
 });
 
@@ -64,10 +64,10 @@ exports.countlocationchange = functions.database.ref('/location-posts/{locationi
   // waits for this async event to complete before it exits.
   return countRef.transaction(current => {
     if (event.data.exists() && !event.data.previous.exists()) {
-      return (current || 0) + 1;
+      return (current || 0) - 1;
     }
     else if (!event.data.exists() && event.data.previous.exists()) {
-      return (current || 0) - 1;
+      return (current || 0) + 1;
     }
   }).then(() => {
     console.log('Counter updated.');
@@ -83,6 +83,6 @@ exports.recountposts = functions.database.ref('/location-posts/{locationid}/post
     // Return the promise from counterRef.set() so our function 
     // waits for this async event to complete before it exits.
     return collectionRef.once('value')
-        .then(messagesData => counterRef.set(messagesData.numChildren()));
+        .then(messagesData => counterRef.set(-1*(messagesData.numChildren())));
   }
 });
