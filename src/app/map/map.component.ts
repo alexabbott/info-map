@@ -29,7 +29,7 @@ export class MapComponent {
     this.locations = af.database.list('/location-posts');
     this.mapOptions = {
       zoom: 3,
-      center: {lat: 40.730610, lng: -73.935242 },
+      center: {lat: 35.730610, lng: -44.935242 },
       mapTypeControl: false,
       minZoom: 2,
       streetViewControl: false,

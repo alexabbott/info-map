@@ -114,7 +114,7 @@ md-icon {
 
 .user-info {
   display: inline-block;
-  width: calc(100% - 190px);
+  width: calc(100% - 205px);
   vertical-align: middle;
 
   .post-count {
@@ -130,5 +130,7 @@ md-icon {
 
 .profile-button {
   display: inline-block;
+  float: right;
+  margin: 15px 20px 0 0;
   width: 110px;
 }

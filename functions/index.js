@@ -86,3 +86,35 @@ exports.recountposts = functions.database.ref('/location-posts/{locationid}/post
         .then(messagesData => counterRef.set(-1*(messagesData.numChildren())));
   }
 });
+
+// Keeps track of the length of the 'posts' child list in a separate property.
+exports.countlikeschange = functions.database.ref('/users/{userid}/postLikes/{likeid}').onWrite(event => {
+  const collectionRef = event.data.ref.parent;
+  const countRef = collectionRef.parent.child('likesCount');
+
+  // Return the promise from countRef.transaction() so our function
+  // waits for this async event to complete before it exits.
+  return countRef.transaction(current => {
+    if (event.data.exists() && !event.data.previous.exists()) {
+      return (current || 0) - 1;
+    }
+    else if (!event.data.exists() && event.data.previous.exists()) {
+      return (current || 0) + 1;
+    }
+  }).then(() => {
+    console.log('Counter updated.');
+  });
+});
+
+// If the number of likes gets deleted, recount the number of likes
+exports.recountuserlikes = functions.database.ref('/users/{userid}/likesCount').onWrite(event => {
+  if (!event.data.exists()) {
+    const counterRef = event.data.ref;
+    const collectionRef = counterRef.parent.child('postLikes');
+
+    // Return the promise from counterRef.set() so our function 
+    // waits for this async event to complete before it exits.
+    return collectionRef.once('value')
+        .then(messagesData => counterRef.set(-1*(messagesData.numChildren())));
+  }
+});

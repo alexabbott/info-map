@@ -112,14 +112,7 @@ export class SidebarComponent {
             equalTo: uid
           }
         });
-        this.selectedUserLikedCount = 0;
         this.searchLabel = 'destinations';
-        this.filteredPosts.subscribe(post => {
-          this.selectedUserPostCount = post.length;
-          for (let i = 0; i < this.selectedUserPostCount; i++) {
-            this.selectedUserLikedCount += post[i].likesTotal;
-          }
-        });
       }
     });
 

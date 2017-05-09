@@ -55,7 +55,6 @@ export class PostCardComponent implements OnInit {
 
   updatePost(key: string, location:string, tip:string, coordinates:string) {
     this.globalService.toggleForm();
-    console.log(coordinates);
     this.globalService.setFormValues(key, location, tip, coordinates);
   }
 
@@ -94,6 +93,7 @@ export class PostCardComponent implements OnInit {
   likePost(post) {
     this.af.database.object('/user-likes/' + this.userId + '/' + post.$key).set(Date.now());
     this.af.database.list('/posts/' + post.$key + '/likes/' + this.userId).push(this.userId);
+    this.af.database.object('/users/' + post.user + '/postLikes/' + this.userId + post.$key).set(Date.now());
     let likes = this.af.database.list('/posts/' + post.$key + '/likes/');
     likes.subscribe(subscribe => {
       let length = subscribe.length;
@@ -108,6 +108,7 @@ export class PostCardComponent implements OnInit {
   unlikePost(post) {
     this.af.database.list('/user-likes/' + this.userId).remove(post.$key);
     this.af.database.list('/posts/' + post.$key + '/likes').remove(this.userId);
+    this.af.database.list('/users/' + post.user + '/postLikes').remove(this.userId + post.$key);
     let likes = this.af.database.list('/posts/' + post.$key + '/likes/');
     likes.subscribe(subscribe => {
       let length = subscribe.length;
