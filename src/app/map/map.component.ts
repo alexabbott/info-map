@@ -75,7 +75,7 @@ export class MapComponent {
           me.zone.run(() => {
             me.showReset = true;
             me.map.setCenter({lat: newMarker.position.lat(), lng: newMarker.position.lng()});
-            me.map.setZoom(6);
+            me.map.setZoom(me.map.getZoom() + 1);
             me.globalService.filterBy.next('location');
             me.globalService.locationPosts.next(newMarker.title);
             me.globalService.showLocationPosts.next(true);
@@ -90,7 +90,7 @@ export class MapComponent {
       if (this.coordinates) {
         let coordinateArray = this.coordinates.split(',');
         this.map.setCenter(new google.maps.LatLng(parseFloat(coordinateArray[0].trim()), parseFloat(coordinateArray[1].trim())));
-        this.map.setZoom(6);
+        this.map.setZoom(10);
       }
     });
   }
@@ -117,10 +117,10 @@ export class MapComponent {
       // If the place has a geometry, then present it on a map.
       if (place.geometry.viewport) {
         this.map.fitBounds(place.geometry.viewport);
-        this.map.setZoom(6);
+        this.map.setZoom(10);
       } else {
         this.map.setCenter(place.geometry.location);
-        this.map.setZoom(6);
+        this.map.setZoom(10);
       }
 
       var address = '';

@@ -54,7 +54,7 @@
     <div class="text-center no-results" *ngIf="searchTerm && searchTerm !== '' && !showCurrentUserProfile && (filteredPosts | async | search: searchTerm)?.length === 0">No search results</div>
 
     <div *ngIf="!showCurrentUserProfile" class="full-list">
-      <h2 class="headline" *ngIf="filterBy === 'user' || filterBy === 'location'">
+      <h2 class="headline" *ngIf="(filterBy === 'user' || filterBy === 'location') && (filteredPosts | async | search: searchTerm)?.length > 0">
         <span *ngIf="filterBy === 'user'"><img src="{{ (users | async | get: currentUserId)?.photoURL }}"> {{ currentUserName | lastNamePipe }}</span>
         <div class="user-likes" *ngIf="filterBy === 'user'"><md-icon class="active">star</md-icon> {{ (users | async | get: currentUserId)?.likesCount * -1 }} like<span *ngIf="(users | async | get: currentUserId)?.likesCount !== -1">s</span></div>
         <div class="user-locations" *ngIf="filterBy === 'user'"><md-icon>location_on</md-icon> {{ (users | async | get: currentUserId)?.posts_count * -1 }} destinations</div>
