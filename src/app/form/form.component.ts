@@ -103,16 +103,14 @@ export class FormComponent {
       let newKey = this.hashCode(newLocation) + newDate.toString();
       newLocation = newLocation.replace(/\./g, '').trim();
       this.af.database.object('/posts/' + newKey).update({ location: newLocation, coordinates: newCoordinates, tip: newTip, user: this.user.uid, userName: this.user.displayName, published: newDate, rpublished: -1*(newDate), likesTotal: 0 });
-      this.af.database.object('/location-posts/' + newLocation + '/posts/' + newKey).set(Date.now());
       this.af.database.object('/location-posts/' + newLocation).update({ coordinates: newCoordinates });
+      this.af.database.object('/location-posts/' + newLocation + '/posts/' + newKey).set(Date.now());
       this.af.database.object('/user-posts/' + this.user.uid + '/' + newKey).set(Date.now());
 
       this.newLocation = '';
       this.newCoordinates = '';
       this.newTip = '';
       // this.newTag = '';
-
-      this.globalService.createMarker(newLocation, newCoordinates);
 
       this.globalService.toggleForm();
 

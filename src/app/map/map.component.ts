@@ -27,6 +27,7 @@ export class MapComponent {
   constructor(public af: AngularFire, public globalService: GlobalService, public zone: NgZone) {
     const me = this;
     this.locations = af.database.list('/location-posts');
+    this.googleMarkers = [];
     this.mapOptions = {
       zoom: 3,
       center: {lat: 35.730610, lng: -44.935242 },
@@ -36,21 +37,11 @@ export class MapComponent {
       styles: [{"featureType":"all","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"administrative","elementType":"geometry","stylers":[{"visibility":"off"}]},{"featureType":"administrative.country","elementType":"all","stylers":[{"visibility":"simplified"}]},{"featureType":"administrative.country","elementType":"geometry","stylers":[{"visibility":"off"}]},{"featureType":"administrative.province","elementType":"geometry","stylers":[{"visibility":"off"}]},{"featureType":"administrative.locality","elementType":"all","stylers":[{"visibility":"simplified"}]},{"featureType":"administrative.locality","elementType":"geometry","stylers":[{"visibility":"off"}]},{"featureType":"administrative.neighborhood","elementType":"geometry","stylers":[{"visibility":"off"}]},{"featureType":"administrative.land_parcel","elementType":"geometry","stylers":[{"visibility":"off"}]},{"featureType":"landscape","elementType":"all","stylers":[{"visibility":"on"}]},{"featureType":"landscape","elementType":"geometry","stylers":[{"visibility":"off"},{"hue":"#ff0000"}]},{"featureType":"landscape","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"landscape.man_made","elementType":"geometry","stylers":[{"visibility":"on"},{"color":"#944242"}]},{"featureType":"landscape.man_made","elementType":"geometry.fill","stylers":[{"color":"#ffffff"}]},{"featureType":"landscape.natural","elementType":"geometry","stylers":[{"visibility":"on"},{"color":"#ffffff"}]},{"featureType":"landscape.natural.landcover","elementType":"geometry","stylers":[{"visibility":"off"}]},{"featureType":"landscape.natural.terrain","elementType":"geometry","stylers":[{"visibility":"off"},{"saturation":"-1"}]},{"featureType":"poi","elementType":"all","stylers":[{"visibility":"off"}]},{"featureType":"poi","elementType":"geometry","stylers":[{"visibility":"off"}]},{"featureType":"poi.attraction","elementType":"geometry","stylers":[{"visibility":"off"}]},{"featureType":"road","elementType":"all","stylers":[{"visibility":"off"}]},{"featureType":"road","elementType":"geometry.stroke","stylers":[{"visibility":"off"}]},{"featureType":"road.highway","elementType":"all","stylers":[{"visibility":"off"}]},{"featureType":"road.highway","elementType":"geometry.fill","stylers":[{"color":"#292929"}]},{"featureType":"road.highway","elementType":"geometry.stroke","stylers":[{"visibility":"off"},{"color":"#494949"},{"saturation":"-85"}]},{"featureType":"road.arterial","elementType":"geometry.fill","stylers":[{"color":"#888888"},{"visibility":"on"}]},{"featureType":"road.local","elementType":"geometry","stylers":[{"visibility":"off"}]},{"featureType":"road.local","elementType":"geometry.fill","stylers":[{"color":"#ffffff"},{"visibility":"simplified"}]},{"featureType":"transit","elementType":"all","stylers":[{"visibility":"off"}]},{"featureType":"transit","elementType":"geometry","stylers":[{"visibility":"off"}]},{"featureType":"transit.line","elementType":"geometry","stylers":[{"visibility":"off"}]},{"featureType":"transit.station","elementType":"geometry","stylers":[{"visibility":"off"}]},{"featureType":"transit.station.airport","elementType":"geometry","stylers":[{"visibility":"off"}]},{"featureType":"transit.station.bus","elementType":"geometry","stylers":[{"visibility":"off"}]},{"featureType":"transit.station.rail","elementType":"geometry","stylers":[{"visibility":"off"}]},{"featureType":"water","elementType":"geometry","stylers":[{"color":"#dddddd"}]},{"featureType":"water","elementType":"geometry.fill","stylers":[{"color":"#eeeeee"}]},{"featureType":"water","elementType":"geometry.stroke","stylers":[{"visibility":"off"}]}]
     };
 
-    this.markerCount = 0;
-    this.locations.take(1).subscribe(locations => {
-      this.markers = [];
-      this.markerCount = locations.length;
-      for (let i = 0; i < this.markerCount; ++i ){
-        if (locations[i] && locations[i].coordinates) {
-          let coordinatesArray = locations[i].coordinates.split(',');
-          this.markers.push({ city: locations[i].$key, coordinates: {lat: parseFloat(coordinatesArray[0]), lng: parseFloat(coordinatesArray[1].trim())}});
-        }
-      }
+    this.locations.subscribe(locations => {
       if (!this.map) {
         this.map = new google.maps.Map(document.getElementById('map'), this.mapOptions);
         this.globalService.updateMap(this.map);
       }
-      this.initMarkers();
       this.markerCluster = new window['MarkerClusterer'](this.map, this.googleMarkers, { imagePath: '../../assets/cluster' } );
       this.initAutoComplete();
 
@@ -70,20 +61,12 @@ export class MapComponent {
       // }
     });
 
-    globalService.coordinates.subscribe(coo => {
-      this.coordinates = coo;
-      if (this.coordinates) {
-        let coordinateArray = this.coordinates.split(',');
-        this.map.setCenter(new google.maps.LatLng(parseFloat(coordinateArray[0].trim()), parseFloat(coordinateArray[1].trim())));
-        this.map.setZoom(6);
-      }
-    });
-
-    globalService.newCoordinates.subscribe(coo => {
-      if (coo) {
+    this.locations.$ref.on("child_added", (location) => {
+      if (location && location.val().coordinates) {
+        let coordinatesArray = location.val().coordinates.split(',');
         let newMarker: any = new google.maps.Marker({
-          position: {lat: parseFloat(coo.split(',')[0]), lng: parseFloat(coo.split(',')[1].trim())},
-          title: globalService.newLocation.getValue(),
+          position: {lat: parseFloat(coordinatesArray[0]), lng: parseFloat(coordinatesArray[1].trim())},
+          title: location.key,
           map: me.map,
           icon: '../../assets/green-dot.png'
         });
@@ -99,6 +82,15 @@ export class MapComponent {
             me.globalService.updateReset();
           });
         });
+      }
+    });
+
+    globalService.coordinates.subscribe(coo => {
+      this.coordinates = coo;
+      if (this.coordinates) {
+        let coordinateArray = this.coordinates.split(',');
+        this.map.setCenter(new google.maps.LatLng(parseFloat(coordinateArray[0].trim()), parseFloat(coordinateArray[1].trim())));
+        this.map.setZoom(6);
       }
     });
   }
@@ -140,32 +132,5 @@ export class MapComponent {
         ].join(' ');
       }
     });
-  }
-
-  initMarkers(){
-    let me = this;
-    this.googleMarkers = [];
-    for (let i = 0; i < this.markerCount; ++i ){
-      if (this.markers[i]) {
-        let newMarker: any = new google.maps.Marker({
-          position: this.markers[i].coordinates,
-          title: this.markers[i].city,
-          map: me.map,
-          icon: '../../assets/green-dot.png'
-        });
-        this.googleMarkers.push(newMarker);
-        newMarker.addListener('click', function() {
-          me.zone.run(() => {
-            me.showReset = true;
-            me.map.setCenter({lat: newMarker.position.lat(), lng: newMarker.position.lng()});
-            me.map.setZoom(6);
-            me.globalService.filterBy.next('location');
-            me.globalService.locationPosts.next(newMarker.title);
-            me.globalService.showLocationPosts.next(true);
-            me.globalService.updateReset();
-          });
-        });
-      }
-    }
   }
 }
