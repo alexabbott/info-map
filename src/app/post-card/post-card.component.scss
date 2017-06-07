@@ -134,12 +134,26 @@ md-icon {
       font-size: 1.3em;
       margin: 6px -9px 0 -5px;
     }
+
+    .user-icon {
+      color: lighten($color-grey, 10%);
+      font-size: 1.4em;
+      margin: 6px -3px 0 -5px;
+    }
   }
+
+  .user-counter {
+    transform: translateY(3px);
+  }
+}
+
+.published-date {
+  float: right;
 }
 
 .profile-button {
   display: inline-block;
   float: right;
-  margin: 15px 20px 0 0;
+  margin: 3px 20px 0 0;
   width: 110px;
 }
