@@ -193,6 +193,7 @@ export class SidebarComponent {
 
   showNewestPosts() {
     this.searchLabel = 'destinations';
+    this.showReset = true;
     this.filteredPosts = this.af.database.list('/posts', {
       query: {
         orderByChild: 'rpublished',
@@ -204,6 +205,7 @@ export class SidebarComponent {
 
   showPopularPosts() {
     this.searchLabel = 'destinations';
+    this.showReset = true;
     this.filteredPosts = this.af.database.list('/posts', {
       query: {
         orderByChild: 'likesTotal',

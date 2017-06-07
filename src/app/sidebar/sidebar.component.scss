@@ -17,15 +17,21 @@ md-toolbar {
     left: 50%;
     top: 0;
     transform: translateX(-50%);
-    width: 90px;
+    width: 70px;
+
+    @include tablet {
+      width: 90px;
+    }
   }
 
   button {
+    left: 4%;
     position: absolute;
-    right: calc(6% + 50px);
+    right: auto;
     top: 10px;
 
     @include tablet {
+      left: auto;
       right: 9%;
       top: 13px;
     }
@@ -42,8 +48,13 @@ md-toolbar {
 }
 
 .logo {
+  display: none;
   color: $color-white;
   font-size: 22px;
+
+  @include tablet {
+    display: block;
+  }
 }
 
 .profile-image {
