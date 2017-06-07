@@ -2,8 +2,13 @@
 
 .post-card {
   @extend %transition;
+  padding-top: 60px;
   position: relative;
   transition-property: height;
+
+  &.reduce-padding {
+    padding-top: 0;
+  }
 }
 
 .post-name {
@@ -29,20 +34,28 @@
 }
 
 .post-location {
+  border-top-right-radius: 6px;
+  border-top-left-radius: 6px;
+  color: $color-white;
   cursor: pointer;
-  float: left;
   font-size: 1em;
-  margin-top: 10px;
+  background: $color-highlight;
+  display: block;
+  width: calc(100% - 2px);
+  position: absolute;
+  left: -24px;
+  padding: 20px 25px;
+  top: -1em;
 
   md-icon {
-    color: $color-highlight;
+    color: $color-white;
   }
 }
 
 .post-likes {
   color: $color-grey;
-  float: left;
   font-size: 12px;
+  margin-bottom: -10px;
   margin-top: 10px;
 }
 
@@ -55,13 +68,9 @@
 
 .post-user {
   cursor: pointer;
-  float: right;
+  float: left;
   font-size: 1em;
   margin-top: 10px;
-
-  &.float-left {
-    float: left;
-  }
 
   img {
     border-radius: 50%;

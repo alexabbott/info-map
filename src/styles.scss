@@ -48,6 +48,10 @@ body {
   color: $color-highlight;
 }
 
+.mat-card {
+  border-radius: 6px !important;
+}
+
 .grey-text .mat-button-wrapper {
   color: $color-grey;
 }

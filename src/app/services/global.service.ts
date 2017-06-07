@@ -13,6 +13,7 @@ export class GlobalService {
   public users = new BehaviorSubject(null);
   public userId = new BehaviorSubject(null);
   public showForm = new BehaviorSubject(false);
+  public searchTerm = new BehaviorSubject('');
   public postKey = new BehaviorSubject(null);
   public postTip = new BehaviorSubject(null);
   public postLocation = new BehaviorSubject(null);

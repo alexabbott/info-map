@@ -131,14 +131,15 @@ export class PostCardComponent implements OnInit {
     this.globalService.filterBy.next('user');
     this.globalService.currentUserName.next(userName);
     this.globalService.usersId.next(uid);
+    userName = userName.split(' ')[0] + ' ' + userName.split(' ')[(userName.split(' ').length - 1)][0];
+    this.globalService.searchTerm.next(userName);
   }
 
   filterByLocation(loc, coo) {
     this.globalService.filterBy.next('location');
     this.globalService.locationPosts.next(loc);
-    // this.globalService.updateMapCenter(coo);
-    console.log('coo', coo);
     this.globalService.coordinates.next(coo);
     this.globalService.updateReset();
+    this.globalService.searchTerm.next(loc);
   }
 }

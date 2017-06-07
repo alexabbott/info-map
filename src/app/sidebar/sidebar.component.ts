@@ -18,6 +18,7 @@ export class SidebarComponent {
   userLikedPosts: FirebaseListObservable<any[]>;
   users: FirebaseObjectObservable<any>;
   userId: string;
+  displayName: string;
   showReset: boolean;
   showForm: boolean;
   showMenu: boolean;
@@ -58,6 +59,7 @@ export class SidebarComponent {
     this.af.auth.subscribe(auth => {
       if (auth) {
         this.userId = auth.uid;
+        this.displayName = auth.auth.displayName;
         globalService.updateUser(auth.auth);
         globalService.updateUserId(this.userId);
         af.database.object('/users/' + this.userId).update({ name: auth.auth.displayName, uid: auth.uid, photoURL: auth.auth.photoURL, email: auth.auth.email });
@@ -96,6 +98,10 @@ export class SidebarComponent {
 
     globalService.filterBy.subscribe(filter => {
       this.filterBy = filter;
+    });
+
+    globalService.searchTerm.subscribe(term => {
+      this.searchTerm = term;
     });
 
     // filter by user
@@ -180,6 +186,9 @@ export class SidebarComponent {
     this.showMenu = false;
     this.showCurrentUserProfile = true;
     this.globalService.filterBy.next('currentUser');
+    let name = this.displayName.split(' ')[0] + ' ' + this.displayName.split(' ')[(this.displayName.split(' ').length - 1)][0];
+    this.searchTerm = name;
+    this.orderBy = 'newestPosts';
   }
 
   showNewestPosts() {
@@ -190,6 +199,7 @@ export class SidebarComponent {
       }
     });
     this.orderBy = 'newestPosts';
+    this.showCurrentUserProfile = false;
   }
 
   showPopularPosts() {
@@ -200,6 +210,7 @@ export class SidebarComponent {
       }
     });
     this.orderBy = 'popularPosts';
+    this.showCurrentUserProfile = false;
   }
 
   showTopUsers() {
@@ -212,6 +223,7 @@ export class SidebarComponent {
       }
     });
     this.orderBy = 'topUsers';
+    this.showCurrentUserProfile = false;
   }
 
   showTopDestinations() {
@@ -224,5 +236,6 @@ export class SidebarComponent {
       }
     });
     this.orderBy = 'topDestinations';
+    this.showCurrentUserProfile = false;
   }
 }

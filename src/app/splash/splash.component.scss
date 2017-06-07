@@ -31,13 +31,17 @@
         left: 50%;
         padding: 0 40px;
         position: absolute;
+        text-align: center;
         top: 50%;
         transform: translate(-50%, -50%);
+        width: 90%;
 
-        .logo-image {
-            margin: 11px -7px 0 0;
-            vertical-align: top;
-            width: 65px;
+        .worldy {
+            background: $color-white;
+            border-radius: 50%;
+            display: block;
+            margin: 0 auto 20px auto;
+            width: 50%;
         }
 
         .logo,
@@ -47,7 +51,7 @@
         }
 
         .logo {
-            font-size: 2em;
+            font-size: 1.5em;
             margin-bottom: .7em;
         }
 

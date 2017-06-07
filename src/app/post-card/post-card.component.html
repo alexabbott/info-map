@@ -1,5 +1,4 @@
-<div class="post-card">
-
+<div class="post-card" [ngClass]="{'reduce-padding': filterBy === 'location'}">
 
   <span *ngIf="post.name">
     <div class="user-photo">
@@ -36,7 +35,13 @@
     <div class="post-user" (click)="filterByUser(post.user, post.userName)" *ngIf="filterBy !== 'user'" [ngClass]="{ 'float-left': filterBy === 'location' }">
       <img src="{{ (users | async | get: post.user)?.photoURL }}"> {{ (users | async | get: post.user)?.name | lastNamePipe }}
     </div>
+    <div class="post-date">
+      <md-icon>event</md-icon> {{ post.published | date: 'mediumDate' }}
+    </div>
     <div class="clearfix"></div>
+    <div class="post-tip">
+      {{ post.tip }}
+    </div>
     <div class="post-likes">
       <span *ngIf="(user | async)?.uid" class="like-controls">
         <md-icon
@@ -52,13 +57,6 @@
         </md-icon>
       </span>
       <span *ngIf="!post.likesTotal && post.likesTotal !== 0">0</span>{{ post.likesTotal * -1 }} like<span *ngIf="post.likesTotal < -1 || post.likesTotal === 0 || !post.likesTotal">s</span>
-    </div>
-    <div class="post-date">
-      <md-icon>event</md-icon> {{ post.published | date: 'mediumDate' }}
-    </div>
-    <div class="clearfix"></div>
-    <div class="post-tip">
-      {{ post.tip }}
     </div>
     <div class="delete-post" *ngIf="post.user === (user | async)?.uid" >
       <md-icon (click)="updatePost(post.$key, post.location, post.tip, post.coordinates)">mode_edit</md-icon>

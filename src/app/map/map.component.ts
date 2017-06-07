@@ -80,6 +80,7 @@ export class MapComponent {
             me.globalService.locationPosts.next(newMarker.title);
             me.globalService.showLocationPosts.next(true);
             me.globalService.updateReset();
+            me.globalService.searchTerm.next(newMarker.title);
           });
         });
       }
