@@ -16,7 +16,7 @@
   </span>
 
   <span *ngIf="post.posts">
-    <div class="post-location">
+    <div class="post-location" (click)="filterByLocation(post.$key, post.coordinates)">
       <md-icon>location_on</md-icon> {{ post.$key }}
     </div>
     <div class="user-info">
