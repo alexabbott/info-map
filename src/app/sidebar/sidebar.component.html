@@ -5,7 +5,7 @@
     <button md-menu-item (click)="filterByCurrentUser()">My Profile</button>
     <button md-menu-item (click)="logout()">Logout</button>
   </md-menu>
-  <img src="../../assets/worldy.svg" class="header-logo" (click)="resetPosts()">
+  <img src="../../assets/worldy.svg" class="header-logo" (click)="showRandomLocation()">
   <button *ngIf="!(af.auth | async)?.uid" md-raised-button (click)="login()" class="login">Login</button>
   <button *ngIf="(af.auth | async)?.uid" md-raised-button (click)="togglePostForm()" class="alt">
     <span *ngIf="showForm !== true">Add a Location</span>

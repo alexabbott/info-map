@@ -240,4 +240,11 @@ export class SidebarComponent {
     this.orderBy = 'topDestinations';
     this.showCurrentUserProfile = false;
   }
+
+  showRandomLocation() {
+    this.filteredPosts.subscribe(post => {
+      let randomLocation = post[Math.floor(Math.random()*post.length)].location;
+      this.searchTerm = randomLocation;
+    });
+  }
 }

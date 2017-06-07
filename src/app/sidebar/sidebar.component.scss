@@ -13,6 +13,7 @@ md-toolbar {
   .header-logo {
     background: $color-white;
     border-radius: 50%;
+    cursor: pointer;
     position: absolute;
     left: 50%;
     top: 0;
@@ -20,6 +21,7 @@ md-toolbar {
     width: 70px;
 
     @include tablet {
+      // pointer-events: none;
       width: 90px;
     }
   }
