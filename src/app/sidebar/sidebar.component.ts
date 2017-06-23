@@ -243,8 +243,9 @@ export class SidebarComponent {
 
   showRandomLocation() {
     this.filteredPosts.subscribe(post => {
-      let randomLocation = post[Math.floor(Math.random()*post.length)].location;
-      this.searchTerm = randomLocation;
+      let randomLocation = post[Math.floor(Math.random()*post.length)];
+      this.searchTerm = randomLocation.location;
+      this.globalService.coordinates.next(randomLocation.coordinates);
     });
   }
 }
