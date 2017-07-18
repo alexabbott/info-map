@@ -62,8 +62,8 @@ export class GlobalService {
   public updateUserId(id) {
     this.userId.next(id);
   }
-  public toggleForm() {
-    this.showForm.next(!this.showForm.getValue());
+  public closeForm() {
+    this.showForm.next(false);
   }
   public setFormValues(key, location, tip, coordinates) {
     this.postKey.next(key);

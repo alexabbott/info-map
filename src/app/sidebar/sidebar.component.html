@@ -7,10 +7,6 @@
   </md-menu>
   <img src="../../assets/worldy.svg" class="header-logo" (click)="showRandomLocation()">
   <button *ngIf="!(af.auth | async)?.uid" md-raised-button (click)="login()" class="login">Login</button>
-  <button *ngIf="(af.auth | async)?.uid" md-raised-button (click)="togglePostForm()" class="alt">
-    <span *ngIf="showForm !== true">Add a Location</span>
-    <span *ngIf="showForm === true">Hide</span>
-  </button>
 </md-toolbar>
 
 <md-sidenav

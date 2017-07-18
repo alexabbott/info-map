@@ -1,4 +1,4 @@
-@import '~@angular/material/core/theming/prebuilt/indigo-pink.css';
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
 @import './variables';
 
 html,
@@ -28,6 +28,20 @@ body {
   }
 }
 
+.text-center {
+  text-align: center;
+}
+
+.no-height {
+  height: 0;
+  overflow: hidden;
+}
+
+.disabled-button {
+  opacity: .4;
+  pointer-events: none;
+}
+
 .highlight-text {
   color: $color-highlight;
 }
@@ -44,6 +58,10 @@ body {
   color: $color-white;
 }
 
+.mat-calendar-period-button .mat-button-wrapper {
+  color: $color-grey;
+}
+
 .alt .mat-button-wrapper {
   color: $color-highlight;
 }
@@ -56,30 +74,13 @@ body {
   color: $color-grey;
 }
 
-.mat-input-wrapper {
-  margin: 1.3em 0 !important;
-}
-
 .mat-input-underline {
+  background-color: $color-highlight;
   border-top-color: $color-highlight;
 }
 
 .mat-input-placeholder {
   color: $color-grey-mid;
-}
-
-.text-center {
-  text-align: center;
-}
-
-.no-height {
-  height: 0;
-  overflow: hidden;
-}
-
-.disabled-button {
-  opacity: .4;
-  pointer-events: none;
 }
 
 .mat-select {
@@ -151,5 +152,28 @@ snack-bar-container {
 .my-posts {
   .post-user {
     display: none;
+  }
+}
+
+md-input-container.alt {
+  .mat-input-wrapper {
+    background: $color-white;
+    border: 1px solid $color-highlight;
+    border-radius: 5px;
+    height: 25px;
+    padding: 6px;
+  }
+
+  .mat-input-infix {
+    border-top: none;
+    padding-top: 0;
+  }
+
+  .mat-input-underline {
+    display: none;
+  }
+
+  .mat-input-placeholder-wrapper {
+    top: -20px;
   }
 }

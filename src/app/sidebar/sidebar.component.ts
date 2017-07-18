@@ -161,11 +161,6 @@ export class SidebarComponent {
      this.af.auth.logout();
   }
 
-  togglePostForm() {
-    this.globalService.toggleForm();
-    this.globalService.postKey.next(null)
-  }
-
   resetPosts() {
     this.filteredPosts = this.af.database.list('/posts', {
       query: {

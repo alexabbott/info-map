@@ -17,35 +17,22 @@ export class FormComponent {
   newTip: string;
   newLocation: string;
   newCoordinates: string;
+  newDate: string;
   newTag: string;
   tags: Array<any>;
   map: any;
+  maxDate: any;
 
   private clientId: string = '8e1349e63dfd43dc67a63e0de3befc68';
 
   constructor(public af: AngularFire, public globalService: GlobalService, public snackBar: MdSnackBar) {
 
+    this.maxDate = new Date();
+
     this.filteredPosts = af.database.list('/posts');
 
     // this.tags = [
-    //   { value: 'Blazing' },
     //   { value: 'Chilling' },
-    //   { value: 'Commuting' },
-    //   { value: 'Dancing' },
-    //   { value: 'Driving' },
-    //   { value: 'Festival' },
-    //   { value: 'Focusing' },
-    //   { value: 'Getting ready' },
-    //   { value: 'Getting weird' },
-    //   { value: 'Hiking' },
-    //   { value: 'Hooking up' },
-    //   { value: 'Partying' },
-    //   { value: 'Pregaming' },
-    //   { value: 'Road tripping' },
-    //   { value: 'Rocking out' },
-    //   { value: 'Running' },
-    //   { value: 'Tripping balls' },
-    //   { value: 'Waking up' },
     //   { value: 'Working out' },
     // ];
 
@@ -93,16 +80,33 @@ export class FormComponent {
     return hash;
   };
 
-  addPost(newLocation: string, newCoordinates: string, newTip: string) {
+  addPost(newLocation: string, newCoordinates: string, newTip: string, newDate: any) {
     let d = new Date();
-    let newDate = d.getTime();
+    let postDate = d.getTime();
+
     // if (!newTag) {
     //   newTag = '';
     // }
-    if (newLocation && newCoordinates && newTip && newDate) {
-      let newKey = this.hashCode(newLocation) + newDate.toString();
+    if (newLocation && newCoordinates && newTip && postDate) {
+      let newKey = this.hashCode(newLocation) + postDate.toString();
       newLocation = newLocation.replace(/\./g, '').trim();
-      this.af.database.object('/posts/' + newKey).update({ location: newLocation, coordinates: newCoordinates, tip: newTip, user: this.user.uid, userName: this.user.displayName, published: newDate, rpublished: -1*(newDate), likesTotal: 0 });
+
+      let postData = {
+        location: newLocation,
+        coordinates: newCoordinates,
+        tip: newTip,
+        user: this.user.uid,
+        userName: this.user.displayName,
+        published: postDate,
+        rpublished: -1*(postDate),
+        likesTotal: 0
+      }
+
+      if (newDate) {
+        postData['visitDate'] = newDate.getTime();
+      }
+
+      this.af.database.object('/posts/' + newKey).update(postData);
       this.af.database.object('/location-posts/' + newLocation).update({ coordinates: newCoordinates });
       this.af.database.object('/location-posts/' + newLocation + '/posts/' + newKey).set(Date.now());
       this.af.database.object('/user-posts/' + this.user.uid + '/' + newKey).set(Date.now());
@@ -110,9 +114,10 @@ export class FormComponent {
       this.newLocation = '';
       this.newCoordinates = '';
       this.newTip = '';
+      this.newDate = null;
       // this.newTag = '';
 
-      this.globalService.toggleForm();
+      this.showForm = false;
 
       this.snackBar.open('Post saved', 'OK!', {
         duration: 2000,
@@ -120,12 +125,29 @@ export class FormComponent {
     }
   }
 
-  updatePost(key, newLocation, newCoordinates, newTip) {
+  updatePost(key, newLocation, newCoordinates, newTip, newDate) {
     let d = new Date();
-    let newDate = d.getTime();
-    if (newLocation && newCoordinates && newTip && newDate) {
+    let postDate = d.getTime();
+
+    if (newLocation && newCoordinates && newTip && postDate) {
       newLocation = newLocation.replace(/\./g, '').trim();
-      this.af.database.object('/posts/' + key).update({ location: newLocation, coordinates: newCoordinates, tip: newTip, published: newDate, rpublished: -1*(newDate) });
+
+      let postData = {
+        location: newLocation,
+        coordinates: newCoordinates,
+        tip: newTip,
+        user: this.user.uid,
+        userName: this.user.displayName,
+        published: postDate,
+        rpublished: -1*(postDate),
+        likesTotal: 0
+      }
+
+      if (newDate) {
+        postData['visitDate'] = newDate.getTime();
+      }
+
+      this.af.database.object('/posts/' + key).update({ location: newLocation, coordinates: newCoordinates, tip: newTip, published: postDate, rpublished: -1*(postDate) });
       this.af.database.object('/location-posts/' + newLocation + '/posts/' + key).set(Date.now());
       this.af.database.object('/location-posts/' + newLocation).update({ coordinates: newCoordinates });
       this.af.database.object('/user-posts/' + this.user.uid + '/' + key).set(Date.now());
@@ -133,9 +155,10 @@ export class FormComponent {
       this.newLocation = '';
       this.newCoordinates = '';
       this.newTip = '';
+      this.newDate = null;
       // this.newTag = '';
 
-      this.globalService.toggleForm();
+      this.showForm = false;
 
       this.snackBar.open('Post updated', 'OK!', {
         duration: 2000,

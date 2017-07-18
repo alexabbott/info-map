@@ -3,7 +3,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AngularFireModule, AuthProviders, AuthMethods } from 'angularfire2';
-import { MaterialModule } from '@angular/material';
+import { MaterialModule, MdDatepickerModule, MdNativeDateModule } from '@angular/material';
 import 'hammerjs';
 import { Ng2MapModule} from 'ng2-map';
 
@@ -65,11 +65,13 @@ const firebaseAuthConfig = {
     DeleteDialogComponent
   ],
   imports: [
-    MaterialModule,
+    AngularFireModule.initializeApp(firebaseConfig, firebaseAuthConfig),
     BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
-    AngularFireModule.initializeApp(firebaseConfig, firebaseAuthConfig),
+    MaterialModule,
+    MdDatepickerModule,
+    MdNativeDateModule,
     Ng2MapModule.forRoot({apiUrl: 'https://maps.google.com/maps/api/js?key=AIzaSyD9e_lkQIiKtphl0vGK3MjbC589jQcRtvk&libraries=places'})
   ],
   entryComponents: [DeleteDialogComponent],

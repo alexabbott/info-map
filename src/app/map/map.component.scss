@@ -9,6 +9,9 @@
   @include tablet {
     height: 100vh;
     margin-top: 0;
+    position: absolute !important;
+    right: 0;
+    top: 0;
     width: 65%;
   }
 }

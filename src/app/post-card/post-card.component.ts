@@ -54,7 +54,7 @@ export class PostCardComponent implements OnInit {
   }
 
   updatePost(key: string, location:string, tip:string, coordinates:string) {
-    this.globalService.toggleForm();
+    this.globalService.closeForm();
     this.globalService.setFormValues(key, location, tip, coordinates);
   }
 

@@ -160,11 +160,6 @@ md-toolbar {
       text-overflow: ellipsis;
       width: calc(100% - 24px);
     }
-
-    .mat-input-wrapper {
-      margin-bottom: 15px !important;
-
-    }
   }
 
   .sort {
@@ -186,7 +181,6 @@ md-toolbar {
   background: $color-white;
   display: none;
   opacity: 0;
-  transform: translate3d(0, 129px, 0);
   transition: opacity .3s ease-out, transform .3s ease-out;
 
   @include mobile {
@@ -199,7 +193,6 @@ md-toolbar {
   @include tablet {
     display: block;
     opacity: 1;
-    transform: translate3d(0, 135px, 0);
   }
 
   &.push-down {
