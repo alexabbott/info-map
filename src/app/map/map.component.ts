@@ -46,12 +46,10 @@ export class MapComponent {
         this.route.params.subscribe(() => {
           let locRef = this.af.database.object('/location-posts/' + this.route.snapshot.queryParams['search']);
           locRef.subscribe(ref => {
-            console.log('query', this.route.snapshot.queryParams['search']);
-            console.log('ref', ref);
-            console.log('lng', parseFloat(ref.coordinates.split(',')[0].trim()));
-            console.log('lat', parseFloat(ref.coordinates.split(',')[1].trim()));
-            this.map.setCenter(new google.maps.LatLng(parseFloat(ref.coordinates.split(',')[0].trim()), parseFloat(ref.coordinates.split(',')[1].trim())));
-            this.map.setZoom(8);
+            if (ref.coordinates) {
+              this.map.setCenter(new google.maps.LatLng(parseFloat(ref.coordinates.split(',')[0].trim()), parseFloat(ref.coordinates.split(',')[1].trim())));
+              this.map.setZoom(8);
+            }
           });
         });
       }
