@@ -1,6 +1,7 @@
 import { Component, Injectable, NgZone } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs/Rx';
 import 'rxjs/add/operator/take';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AngularFire, FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2';
 import { GlobalService } from '../services/global.service';
 import '../../assets/markerclusterer.js';
@@ -24,7 +25,7 @@ export class MapComponent {
   markerCount: number;
   markerCluster: any;
 
-  constructor(public af: AngularFire, public globalService: GlobalService, public zone: NgZone) {
+  constructor(public af: AngularFire, public globalService: GlobalService, public zone: NgZone, public router: Router, public route: ActivatedRoute) {
     const me = this;
     this.locations = af.database.list('/location-posts');
     this.googleMarkers = [];
@@ -41,6 +42,18 @@ export class MapComponent {
       if (!this.map) {
         this.map = new google.maps.Map(document.getElementById('map'), this.mapOptions);
         this.globalService.updateMap(this.map);
+
+        this.route.params.subscribe(() => {
+          let locRef = this.af.database.object('/location-posts/' + this.route.snapshot.queryParams['search']);
+          locRef.subscribe(ref => {
+            console.log('query', this.route.snapshot.queryParams['search']);
+            console.log('ref', ref);
+            console.log('lng', parseFloat(ref.coordinates.split(',')[0].trim()));
+            console.log('lat', parseFloat(ref.coordinates.split(',')[1].trim()));
+            this.map.setCenter(new google.maps.LatLng(parseFloat(ref.coordinates.split(',')[0].trim()), parseFloat(ref.coordinates.split(',')[1].trim())));
+            this.map.setZoom(8);
+          });
+        });
       }
       this.markerCluster = new window['MarkerClusterer'](this.map, this.googleMarkers, { imagePath: '../../assets/cluster' } );
       this.initAutoComplete();
@@ -80,7 +93,7 @@ export class MapComponent {
             me.globalService.locationPosts.next(newMarker.title);
             me.globalService.showLocationPosts.next(true);
             me.globalService.updateReset();
-            me.globalService.searchTerm.next(newMarker.title);
+            me.router.navigate(['/'], { queryParams: {search: newMarker.title} });
           });
         });
       }

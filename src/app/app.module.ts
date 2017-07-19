@@ -2,10 +2,12 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { environment } from '../environments/environment';
+import { RouterModule, Routes } from '@angular/router';
 import { AngularFireModule, AuthProviders, AuthMethods } from 'angularfire2';
 import { MaterialModule, MdDatepickerModule, MdNativeDateModule } from '@angular/material';
-import 'hammerjs';
 import { Ng2MapModule} from 'ng2-map';
+import 'hammerjs';
 
 //services
 import { GlobalService } from './services/global.service';
@@ -30,20 +32,14 @@ import { PostCardComponent } from './post-card/post-card.component';
 import { SplashComponent } from './splash/splash.component';
 import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
 
-// Must export the config
-export const firebaseConfig = {
-    apiKey: "AIzaSyCjV1QF1t8-EHtNJRSj0TuVEXBVHNg8LAA",
-    authDomain: "bynd-map.firebaseapp.com",
-    databaseURL: "https://bynd-map.firebaseio.com",
-    projectId: "bynd-map",
-    storageBucket: "bynd-map.appspot.com",
-    messagingSenderId: "637854657898"
-  };
-
 const firebaseAuthConfig = {
   provider: AuthProviders.Google,
   method: AuthMethods.Redirect
 };
+
+const appRoutes: Routes = [
+  { path: '', component: SidebarComponent }
+];
 
 @NgModule({
   declarations: [
@@ -65,14 +61,18 @@ const firebaseAuthConfig = {
     DeleteDialogComponent
   ],
   imports: [
-    AngularFireModule.initializeApp(firebaseConfig, firebaseAuthConfig),
+    AngularFireModule.initializeApp(environment.firebase, firebaseAuthConfig),
     BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
     MaterialModule,
     MdDatepickerModule,
     MdNativeDateModule,
-    Ng2MapModule.forRoot({apiUrl: 'https://maps.google.com/maps/api/js?key=AIzaSyD9e_lkQIiKtphl0vGK3MjbC589jQcRtvk&libraries=places'})
+    Ng2MapModule.forRoot(environment.googleMaps),
+    RouterModule.forRoot(
+      appRoutes,
+      { enableTracing: true } // <-- debugging purposes only
+    ),
   ],
   entryComponents: [DeleteDialogComponent],
   providers: [GlobalService],

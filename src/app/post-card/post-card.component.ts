@@ -1,8 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { GlobalService } from '../services/global.service';
+import { Router } from '@angular/router';
 import { AngularFire, FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2';
 import { MdSnackBar, MdDialogRef, MdDialog } from '@angular/material';
-import { DeleteDialogComponent } from '../delete-dialog/delete-dialog.component'
+import { DeleteDialogComponent } from '../delete-dialog/delete-dialog.component';
 
 @Component({
   selector: 'post-card',
@@ -26,7 +27,7 @@ export class PostCardComponent implements OnInit {
   selectedOption: string;
   filterBy: string;
 
-  constructor(public af: AngularFire, public globalService: GlobalService, public snackBar: MdSnackBar, public dialog: MdDialog) {
+  constructor(public af: AngularFire, public globalService: GlobalService, public snackBar: MdSnackBar, public dialog: MdDialog, public router: Router) {
     this.users = af.database.object('/users');
     this.filteredPosts = af.database.list('/posts');
     this.af.auth.subscribe(auth => {
@@ -59,6 +60,7 @@ export class PostCardComponent implements OnInit {
   }
 
   deletePost(key: string, location: string) {
+    this.globalService.closeForm();
     let dialogRef = this.dialog.open(DeleteDialogComponent);
     dialogRef.afterClosed().subscribe(result => {
       this.selectedOption = result;
@@ -91,6 +93,7 @@ export class PostCardComponent implements OnInit {
   }
 
   likePost(post) {
+    this.globalService.closeForm();
     this.af.database.object('/user-likes/' + this.userId + '/' + post.$key).set(Date.now());
     this.af.database.list('/posts/' + post.$key + '/likes/' + this.userId).push(this.userId);
     this.af.database.object('/users/' + post.user + '/postLikes/' + this.userId + post.$key).set(Date.now());
@@ -106,6 +109,7 @@ export class PostCardComponent implements OnInit {
   }
 
   unlikePost(post) {
+    this.globalService.closeForm();
     this.af.database.list('/user-likes/' + this.userId).remove(post.$key);
     this.af.database.list('/posts/' + post.$key + '/likes').remove(this.userId);
     this.af.database.list('/users/' + post.user + '/postLikes').remove(this.userId + post.$key);
@@ -127,19 +131,22 @@ export class PostCardComponent implements OnInit {
   // }
 
   filterByUser(uid, userName) {
+    this.globalService.closeForm();
     this.globalService.updateReset();
     this.globalService.filterBy.next('user');
     this.globalService.currentUserName.next(userName);
+    this.router.navigate(['/'], { queryParams: {search: userName} });
     this.globalService.usersId.next(uid);
     userName = userName.split(' ')[0] + ' ' + userName.split(' ')[(userName.split(' ').length - 1)][0];
     this.globalService.searchTerm.next(userName);
   }
 
   filterByLocation(loc, coo) {
+    this.globalService.closeForm();
     this.globalService.filterBy.next('location');
     this.globalService.locationPosts.next(loc);
     this.globalService.coordinates.next(coo);
     this.globalService.updateReset();
-    this.globalService.searchTerm.next(loc);
+    this.router.navigate(['/'], { queryParams: {search: loc} });
   }
 }

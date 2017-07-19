@@ -1,4 +1,4 @@
-<md-toolbar>
+<md-toolbar class="fade-in-component">
   <span class="logo">Beyond Adventure Log</span>
   <img *ngIf="(af.auth | async)?.uid" src="{{ (af.auth | async)?.auth.photoURL }}" class="profile-image" [mdMenuTriggerFor]="menu">
   <md-menu #menu="mdMenu">
@@ -10,7 +10,7 @@
 </md-toolbar>
 
 <md-sidenav
-  class="md-sidenav-left"
+  class="md-sidenav-left fade-in-component"
   md-component-id="left"
   md-disable-backdrop
   md-is-locked-open="true"
@@ -24,22 +24,15 @@
 
   <div class="search-container">
     <md-input-container floatPlaceholder="never" class="search-posts">
-      <input mdInput placeholder="Search {{ searchLabel }}" [(ngModel)]="searchTerm">
+      <input mdInput placeholder="Search {{ searchLabel }}" [(ngModel)]="searchTerm" (focus)="globalService.closeForm()">
       <md-icon *ngIf="searchTerm && searchTerm !== ''" (click)="resetPosts()">close</md-icon>
     </md-input-container>
-    <md-select class="search-sort" [(ngModel)]="orderBy">
+    <md-select class="search-sort" [(ngModel)]="orderBy" (change)="globalService.closeForm()">
       <md-option value="newestPosts" (click)="showNewestPosts()" [ngClass]="{ 'highlight-text': orderBy === 'newestPosts' }">Newest Posts</md-option>
       <md-option value="popularPosts" (click)="showPopularPosts()" [ngClass]="{ 'highlight-text': orderBy === 'popularPosts' }">Popular Posts</md-option>
       <md-option value="topUsers" (click)="showTopUsers()" [ngClass]="{ 'highlight-text': orderBy === 'topUsers' && globalService.filterBy.getValue() === 'topUsers' }">Top Users</md-option>
       <md-option value="topDestinations" (click)="showTopDestinations()" [ngClass]="{ 'highlight-text': orderBy === 'topDestinations' && globalService.filterBy.getValue() === 'topDestinations' }">Top Destinations</md-option>
     </md-select>
-    <!-- <md-icon class="sort" [mdMenuTriggerFor]="sort">sort</md-icon>
-    <md-menu #sort="mdMenu">
-      <button md-menu-item (click)="showNewestPosts()" [ngClass]="{ 'highlight-text': orderBy === 'newestPosts' }">Newest Posts</button>
-      <button md-menu-item (click)="showPopularPosts()" [ngClass]="{ 'highlight-text': orderBy === 'popularPosts' }">Popular Posts</button>
-      <button md-menu-item (click)="showTopUsers()" [ngClass]="{ 'highlight-text': orderBy === 'topUsers' && globalService.filterBy.getValue() === 'topUsers' }">Top Users</button>
-      <button md-menu-item (click)="showTopDestinations()" [ngClass]="{ 'highlight-text': orderBy === 'topDestinations' && globalService.filterBy.getValue() === 'topDestinations' }">Top Destinations</button>
-    </md-menu> -->
   </div>
 
   <div

@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AngularFire, FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2';
 import { GlobalService } from '../services/global.service';
+import { ActivatedRoute, Router, Params } from '@angular/router';
 
 @Component({
   selector: 'side-bar',
@@ -38,7 +39,8 @@ export class SidebarComponent {
   showUserProfile: boolean;
   searchLabel: string;
 
-  constructor(public af: AngularFire, public globalService: GlobalService) {
+  constructor(public af: AngularFire, public globalService: GlobalService, public route: ActivatedRoute, public router: Router) {
+
     this.orderBy = 'newestPosts';
     this.filteredPosts = af.database.list('/posts', {
       query: {
@@ -153,6 +155,16 @@ export class SidebarComponent {
     // });
   }
 
+  ngOnInit() {
+    this.router.events.subscribe((val) => {
+         this.searchTerm = this.route.snapshot.queryParams['search'];
+    });
+
+    this.route.params.subscribe((params: Params) => {
+      this.searchTerm = this.route.snapshot.queryParams['search'];
+    });
+  }
+
   login() {
     this.af.auth.login();
   }
@@ -172,6 +184,7 @@ export class SidebarComponent {
     this.globalService.filterBy.next('');
     this.map.setZoom(3);
     this.searchTerm = '';
+    this.router.navigate(['/'], { queryParams: {search: null} });
     this.searchLabel = 'destinations';
     this.orderBy = 'newestPosts';
   }

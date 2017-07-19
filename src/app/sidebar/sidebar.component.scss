@@ -152,7 +152,7 @@ md-toolbar {
       cursor: pointer;
       position: absolute;
       right: 0;
-      top: 0;
+      top: 5px;
     }
 
     .mat-input-element {
@@ -198,11 +198,11 @@ md-toolbar {
   &.push-down {
     height: calc(100vh - 125px);
     overflow: scroll;
-    transform: translate3d(0, 68px, 0);
+    transform: translate3d(0, 5px, 0);
 
     @include tablet {
       height: calc(100vh - 134px);
-      transform: translate3d(0, 134px, 0);
+      transform: translate3d(0, 5px, 0);
     }
   }
 }
