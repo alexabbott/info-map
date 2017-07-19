@@ -2,7 +2,7 @@ import { Component, Injectable, NgZone } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs/Rx';
 import 'rxjs/add/operator/take';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AngularFire, FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2';
+import { AngularFireDatabase, FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2/database';
 import { GlobalService } from '../services/global.service';
 import '../../assets/markerclusterer.js';
 
@@ -25,9 +25,9 @@ export class MapComponent {
   markerCount: number;
   markerCluster: any;
 
-  constructor(public af: AngularFire, public globalService: GlobalService, public zone: NgZone, public router: Router, public route: ActivatedRoute) {
+  constructor(public db: AngularFireDatabase, public globalService: GlobalService, public zone: NgZone, public router: Router, public route: ActivatedRoute) {
     const me = this;
-    this.locations = af.database.list('/location-posts');
+    this.locations = db.list('/location-posts');
     this.googleMarkers = [];
     this.mapOptions = {
       zoom: 3,
@@ -44,7 +44,7 @@ export class MapComponent {
         this.globalService.updateMap(this.map);
 
         this.route.params.subscribe(() => {
-          let locRef = this.af.database.object('/location-posts/' + this.route.snapshot.queryParams['search']);
+          let locRef = this.db.object('/location-posts/' + this.route.snapshot.queryParams['search']);
           locRef.subscribe(ref => {
             if (ref.coordinates) {
               this.map.setCenter(new google.maps.LatLng(parseFloat(ref.coordinates.split(',')[0].trim()), parseFloat(ref.coordinates.split(',')[1].trim())));

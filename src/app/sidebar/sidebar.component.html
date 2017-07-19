@@ -1,12 +1,12 @@
 <md-toolbar class="fade-in-component">
   <span class="logo">Beyond Adventure Log</span>
-  <img *ngIf="(af.auth | async)?.uid" src="{{ (af.auth | async)?.auth.photoURL }}" class="profile-image" [mdMenuTriggerFor]="menu">
+  <img *ngIf="(af | async)?.uid" src="{{ (af | async)?.photoURL }}" class="profile-image" [mdMenuTriggerFor]="menu">
   <md-menu #menu="mdMenu">
     <button md-menu-item (click)="filterByCurrentUser()">My Profile</button>
     <button md-menu-item (click)="logout()">Logout</button>
   </md-menu>
   <img src="../../assets/worldy.svg" class="header-logo" (click)="showRandomLocation()">
-  <button *ngIf="!(af.auth | async)?.uid" md-raised-button (click)="login()" class="login">Login</button>
+  <button *ngIf="!(af | async)?.uid" md-raised-button (click)="login()" class="login alt">Login</button>
 </md-toolbar>
 
 <md-sidenav
@@ -18,7 +18,7 @@
   md-whiteframe="4"
   [ngClass]="{ 'full-height': showReset || searchTerm || showForm }">
 
-  <add-form></add-form>
+  <add-form *ngIf="(af | async)?.uid"></add-form>
 
   <div class="clearfix"></div>
 
@@ -37,7 +37,7 @@
 
   <div
     class="posts-container"
-    [ngClass]="{ 'push-down': showReset || searchTerm, 'visible': showReset || searchTerm }">
+    [ngClass]="{ 'push-down': showReset || searchTerm, 'visible': showReset || searchTerm , 'push-down-more': !(af | async)?.uid }">
 
     <div class="text-center no-results" *ngIf="searchTerm && searchTerm !== '' && !showCurrentUserProfile && (filteredPosts | async | search: searchTerm)?.length === 0">No search results</div>
 
@@ -61,7 +61,7 @@
     </div>
 
     <h2 class="headline" *ngIf="showCurrentUserProfile">
-      <img *ngIf="(af.auth | async)?.uid" src="{{ (af.auth | async)?.auth.photoURL }}"> My Profile
+      <img *ngIf="(af | async)?.uid" src="{{ (af | async)?.photoURL }}"> My Profile
       <div class="user-likes"><md-icon class="active">star</md-icon>
         <span *ngIf="(users | async | get: userId)?.likesCount">{{ (users | async | get: userId)?.likesCount * -1 }}</span>
         <span *ngIf="!(users | async | get: userId)?.likesCount">0</span>

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { AngularFire, FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2';
+import { AngularFireDatabase, FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2/database';
+import { AngularFireAuth } from 'angularfire2/auth';
+import * as firebase from 'firebase/app';
 import { GlobalService } from '../services/global.service';
 import { ActivatedRoute, Router, Params } from '@angular/router';
 
@@ -38,16 +40,17 @@ export class SidebarComponent {
   // showTagPosts: boolean;
   showUserProfile: boolean;
   searchLabel: string;
+  af: any;
 
-  constructor(public af: AngularFire, public globalService: GlobalService, public route: ActivatedRoute, public router: Router) {
+  constructor(public db: AngularFireDatabase, public afAuth: AngularFireAuth, public globalService: GlobalService, public route: ActivatedRoute, public router: Router) {
 
     this.orderBy = 'newestPosts';
-    this.filteredPosts = af.database.list('/posts', {
+    this.filteredPosts = db.list('/posts', {
       query: {
         orderByChild: 'rpublished',
       }
     });
-    this.users = af.database.object('/users');
+    this.users = db.object('/users');
     this.showForm = false;
     this.showMenu = false;
     this.showCurrentUserProfile = false;
@@ -58,15 +61,17 @@ export class SidebarComponent {
 
     let me = this;
 
-    this.af.auth.subscribe(auth => {
+    this.af = afAuth.authState;
+
+    afAuth.authState.subscribe(auth => {
       if (auth) {
         this.userId = auth.uid;
-        this.displayName = auth.auth.displayName;
-        globalService.updateUser(auth.auth);
+        this.displayName = auth.displayName;
+        globalService.updateUser(auth);
         globalService.updateUserId(this.userId);
-        af.database.object('/users/' + this.userId).update({ name: auth.auth.displayName, uid: auth.uid, photoURL: auth.auth.photoURL, email: auth.auth.email });
-        this.user = af.database.object('/users/' + this.userId);
-        this.userPosts = af.database.list('/posts', {
+        db.object('/users/' + this.userId).update({ name: auth.displayName, uid: auth.uid, photoURL: auth.photoURL, email: auth.email });
+        this.user = db.object('/users/' + this.userId);
+        this.userPosts = db.list('/posts', {
           query: {
             orderByChild: 'user',
             equalTo: this.userId
@@ -78,7 +83,7 @@ export class SidebarComponent {
             this.totalCurrentUserLikes += post[i].likesTotal;
           }
         });
-        this.userLikedPosts = af.database.list('/user-likes/' + this.userId);
+        this.userLikedPosts = db.list('/user-likes/' + this.userId);
         this.userLikedPosts.subscribe(post => {
           this.currentUserLikedCount = post.length;
         });
@@ -114,7 +119,7 @@ export class SidebarComponent {
       this.currentUserId = uid;
       if (uid) {
         this.showCurrentUserProfile = false;
-        this.filteredPosts = af.database.list('/posts', {
+        this.filteredPosts = db.list('/posts', {
           query: {
             orderByChild: 'user',
             equalTo: uid
@@ -130,7 +135,7 @@ export class SidebarComponent {
       if (location) {
         this.showCurrentUserProfile = false;
         this.searchLabel = 'destinations';
-        this.filteredPosts = af.database.list('/posts', {
+        this.filteredPosts = db.list('/posts', {
           query: {
             orderByChild: 'location',
             equalTo: location
@@ -145,7 +150,7 @@ export class SidebarComponent {
     //   if (tag) {
     //     this.showCurrentUserProfile = false;
     //     this.changeOrder('-likesTotal');
-    //     this.filteredPosts = af.database.list('/posts', {
+    //     this.filteredPosts = db.list('/posts', {
     //       query: {
     //         orderByChild: 'tag',
     //         equalTo: tag
@@ -166,15 +171,15 @@ export class SidebarComponent {
   }
 
   login() {
-    this.af.auth.login();
+    this.afAuth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());;
   }
 
   logout() {
-     this.af.auth.logout();
+     this.afAuth.auth.signOut();
   }
 
   resetPosts() {
-    this.filteredPosts = this.af.database.list('/posts', {
+    this.filteredPosts = this.db.list('/posts', {
       query: {
         orderByChild: 'rpublished',
       }
@@ -202,7 +207,7 @@ export class SidebarComponent {
   showNewestPosts() {
     this.searchLabel = 'destinations';
     this.showReset = true;
-    this.filteredPosts = this.af.database.list('/posts', {
+    this.filteredPosts = this.db.list('/posts', {
       query: {
         orderByChild: 'rpublished',
       }
@@ -214,7 +219,7 @@ export class SidebarComponent {
   showPopularPosts() {
     this.searchLabel = 'destinations';
     this.showReset = true;
-    this.filteredPosts = this.af.database.list('/posts', {
+    this.filteredPosts = this.db.list('/posts', {
       query: {
         orderByChild: 'likesTotal',
       }
@@ -227,7 +232,7 @@ export class SidebarComponent {
     this.searchLabel = 'users';
     this.showReset = true;
     this.globalService.filterBy.next('topUsers');
-    this.filteredPosts = this.af.database.list('/users', {
+    this.filteredPosts = this.db.list('/users', {
       query: {
         orderByChild: 'posts_count',
       }
@@ -240,7 +245,7 @@ export class SidebarComponent {
     this.searchLabel = 'destinations';
     this.showReset = true;
     this.globalService.filterBy.next('topDestinations');
-    this.filteredPosts = this.af.database.list('/location-posts', {
+    this.filteredPosts = this.db.list('/location-posts', {
       query: {
         orderByChild: 'posts_count',
       }

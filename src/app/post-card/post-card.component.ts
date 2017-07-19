@@ -1,7 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { GlobalService } from '../services/global.service';
 import { Router } from '@angular/router';
-import { AngularFire, FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2';
+import { AngularFireDatabase, FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2/database';
+import { AngularFireAuth } from 'angularfire2/auth';
 import { MdSnackBar, MdDialogRef, MdDialog } from '@angular/material';
 import { DeleteDialogComponent } from '../delete-dialog/delete-dialog.component';
 
@@ -27,14 +28,14 @@ export class PostCardComponent implements OnInit {
   selectedOption: string;
   filterBy: string;
 
-  constructor(public af: AngularFire, public globalService: GlobalService, public snackBar: MdSnackBar, public dialog: MdDialog, public router: Router) {
-    this.users = af.database.object('/users');
-    this.filteredPosts = af.database.list('/posts');
-    this.af.auth.subscribe(auth => {
+  constructor(public db: AngularFireDatabase, public afAuth: AngularFireAuth, public globalService: GlobalService, public snackBar: MdSnackBar, public dialog: MdDialog, public router: Router) {
+    this.users = db.object('/users');
+    this.filteredPosts = db.list('/posts');
+    afAuth.authState.subscribe(auth => {
       if (auth) {
-        this.user = af.database.object('/users/' + auth.uid);
+        this.user = db.object('/users/' + auth.uid);
         this.userId = auth.uid;
-        this.userLikes = af.database.object('/user-likes/' + this.userId);
+        this.userLikes = db.object('/user-likes/' + this.userId);
         this.user.subscribe(user => {
           // console.log('thieuser', user);
         });
@@ -48,7 +49,7 @@ export class PostCardComponent implements OnInit {
 
   ngOnInit() {
     if (typeof this.post === 'string') {
-      this.af.database.object('/posts/' + this.post).subscribe(p => {
+      this.db.object('/posts/' + this.post).subscribe(p => {
         this.post = p;
       });
     }
@@ -65,23 +66,23 @@ export class PostCardComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       this.selectedOption = result;
       if (this.selectedOption === 'delete') {
-        this.af.database.list('/posts').remove(key);
-        this.af.database.list('/user-posts/' + this.userId).remove(key);
-        this.af.database.list('/location-posts/' + location + '/posts').remove(key);
-        let loc = this.af.database.list('/location-posts/' + location + '/posts');
+        this.db.list('/posts').remove(key);
+        this.db.list('/user-posts/' + this.userId).remove(key);
+        this.db.list('/location-posts/' + location + '/posts').remove(key);
+        let loc = this.db.list('/location-posts/' + location + '/posts');
         loc.subscribe(posts => {
           let length = posts.length;
           if (length === 0) {
-            this.af.database.list('/location-posts/').remove(location);
+            this.db.list('/location-posts/').remove(location);
           }
         });
 
-        let userLikesList = this.af.database.list('/user-likes');
+        let userLikesList = this.db.list('/user-likes');
         userLikesList.subscribe(users => {
           let usersLength = users.length;
           for (let i = 0; i < usersLength; i++) {
             if (users[i][key]) {
-              this.af.database.list('/user-likes/' + users[i].$key + '/').remove(key);
+              this.db.list('/user-likes/' + users[i].$key + '/').remove(key);
             }
           }
         });
@@ -94,13 +95,13 @@ export class PostCardComponent implements OnInit {
 
   likePost(post) {
     this.globalService.closeForm();
-    this.af.database.object('/user-likes/' + this.userId + '/' + post.$key).set(Date.now());
-    this.af.database.list('/posts/' + post.$key + '/likes/' + this.userId).push(this.userId);
-    this.af.database.object('/users/' + post.user + '/postLikes/' + this.userId + post.$key).set(Date.now());
-    let likes = this.af.database.list('/posts/' + post.$key + '/likes/');
+    this.db.object('/user-likes/' + this.userId + '/' + post.$key).set(Date.now());
+    this.db.list('/posts/' + post.$key + '/likes/' + this.userId).push(this.userId);
+    this.db.object('/users/' + post.user + '/postLikes/' + this.userId + post.$key).set(Date.now());
+    let likes = this.db.list('/posts/' + post.$key + '/likes/');
     likes.subscribe(subscribe => {
       let length = subscribe.length;
-      this.af.database.object('/posts/' + post.$key).update({ likesTotal: -1*(length) });
+      this.db.object('/posts/' + post.$key).update({ likesTotal: -1*(length) });
     });
 
     this.snackBar.open('Liked post', 'OK!', {
@@ -110,13 +111,13 @@ export class PostCardComponent implements OnInit {
 
   unlikePost(post) {
     this.globalService.closeForm();
-    this.af.database.list('/user-likes/' + this.userId).remove(post.$key);
-    this.af.database.list('/posts/' + post.$key + '/likes').remove(this.userId);
-    this.af.database.list('/users/' + post.user + '/postLikes').remove(this.userId + post.$key);
-    let likes = this.af.database.list('/posts/' + post.$key + '/likes/');
+    this.db.list('/user-likes/' + this.userId).remove(post.$key);
+    this.db.list('/posts/' + post.$key + '/likes').remove(this.userId);
+    this.db.list('/users/' + post.user + '/postLikes').remove(this.userId + post.$key);
+    let likes = this.db.list('/posts/' + post.$key + '/likes/');
     likes.subscribe(subscribe => {
       let length = subscribe.length;
-      this.af.database.object('/posts/' + post.$key).update({ likesTotal: -1*(length) });
+      this.db.object('/posts/' + post.$key).update({ likesTotal: -1*(length) });
     });
 
     this.snackBar.open('Unliked post', 'OK!', {

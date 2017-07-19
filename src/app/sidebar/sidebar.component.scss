@@ -205,6 +205,10 @@ md-toolbar {
       transform: translate3d(0, 5px, 0);
     }
   }
+
+  &.push-down-more {
+      transform: translate3d(0, 130px, 0);
+  }
 }
 
 .headline {

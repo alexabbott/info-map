@@ -1,5 +1,5 @@
 import { Component, Output, EventEmitter } from '@angular/core';
-import { AngularFire, FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2';
+import { AngularFireDatabase, FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2/database';
 import { GlobalService } from '../services/global.service';
 import { BehaviorSubject } from "rxjs/Rx";
 import { MdSnackBar } from '@angular/material';
@@ -25,11 +25,11 @@ export class FormComponent {
 
   private clientId: string = '8e1349e63dfd43dc67a63e0de3befc68';
 
-  constructor(public af: AngularFire, public globalService: GlobalService, public snackBar: MdSnackBar) {
+  constructor(public db: AngularFireDatabase, public globalService: GlobalService, public snackBar: MdSnackBar) {
 
     this.maxDate = new Date();
 
-    this.filteredPosts = af.database.list('/posts');
+    this.filteredPosts = db.list('/posts');
 
     // this.tags = [
     //   { value: 'Chilling' },
@@ -106,10 +106,10 @@ export class FormComponent {
         postData['visitDate'] = newDate.getTime();
       }
 
-      this.af.database.object('/posts/' + newKey).update(postData);
-      this.af.database.object('/location-posts/' + newLocation).update({ coordinates: newCoordinates });
-      this.af.database.object('/location-posts/' + newLocation + '/posts/' + newKey).set(Date.now());
-      this.af.database.object('/user-posts/' + this.user.uid + '/' + newKey).set(Date.now());
+      this.db.object('/posts/' + newKey).update(postData);
+      this.db.object('/location-posts/' + newLocation).update({ coordinates: newCoordinates });
+      this.db.object('/location-posts/' + newLocation + '/posts/' + newKey).set(Date.now());
+      this.db.object('/user-posts/' + this.user.uid + '/' + newKey).set(Date.now());
 
       this.newLocation = '';
       this.newCoordinates = '';
@@ -147,10 +147,10 @@ export class FormComponent {
         postData['visitDate'] = newDate.getTime();
       }
 
-      this.af.database.object('/posts/' + key).update({ location: newLocation, coordinates: newCoordinates, tip: newTip, published: postDate, rpublished: -1*(postDate) });
-      this.af.database.object('/location-posts/' + newLocation + '/posts/' + key).set(Date.now());
-      this.af.database.object('/location-posts/' + newLocation).update({ coordinates: newCoordinates });
-      this.af.database.object('/user-posts/' + this.user.uid + '/' + key).set(Date.now());
+      this.db.object('/posts/' + key).update({ location: newLocation, coordinates: newCoordinates, tip: newTip, published: postDate, rpublished: -1*(postDate) });
+      this.db.object('/location-posts/' + newLocation + '/posts/' + key).set(Date.now());
+      this.db.object('/location-posts/' + newLocation).update({ coordinates: newCoordinates });
+      this.db.object('/user-posts/' + this.user.uid + '/' + key).set(Date.now());
 
       this.newLocation = '';
       this.newCoordinates = '';

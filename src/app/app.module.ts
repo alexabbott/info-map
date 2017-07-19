@@ -4,7 +4,9 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { environment } from '../environments/environment';
 import { RouterModule, Routes } from '@angular/router';
-import { AngularFireModule, AuthProviders, AuthMethods } from 'angularfire2';
+import { AngularFireModule } from 'angularfire2';
+import { AngularFireDatabaseModule } from 'angularfire2/database';
+import { AngularFireAuthModule } from 'angularfire2/auth';
 import { MaterialModule, MdDatepickerModule, MdNativeDateModule } from '@angular/material';
 import { Ng2MapModule} from 'ng2-map';
 import 'hammerjs';
@@ -32,10 +34,10 @@ import { PostCardComponent } from './post-card/post-card.component';
 import { SplashComponent } from './splash/splash.component';
 import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
 
-const firebaseAuthConfig = {
-  provider: AuthProviders.Google,
-  method: AuthMethods.Redirect
-};
+// const firebaseAuthConfig = {
+//   provider: AuthProviders.Google,
+//   method: AuthMethods.Redirect
+// };
 
 const appRoutes: Routes = [
   { path: '', component: SidebarComponent }
@@ -61,7 +63,9 @@ const appRoutes: Routes = [
     DeleteDialogComponent
   ],
   imports: [
-    AngularFireModule.initializeApp(environment.firebase, firebaseAuthConfig),
+    AngularFireModule.initializeApp(environment.firebase, 'bynd-map'),
+    AngularFireDatabaseModule, // imports firebase/database, only needed for database features
+    AngularFireAuthModule, // imports firebase/auth, only needed for auth features
     BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
