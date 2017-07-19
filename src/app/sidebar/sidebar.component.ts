@@ -257,7 +257,7 @@ export class SidebarComponent {
   showRandomLocation() {
     this.filteredPosts.subscribe(post => {
       let randomLocation = post[Math.floor(Math.random()*post.length)];
-      this.searchTerm = randomLocation.location;
+      this.router.navigate(['/'], { queryParams: {search: randomLocation.location} });
       this.globalService.coordinates.next(randomLocation.coordinates);
     });
   }
