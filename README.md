@@ -10,21 +10,60 @@ Ensure you have Node and NPM installed using the instructions at:
 
 Install the project dependancies using:
 
+```
     npm install
+```
 
-To enable use of a Firebase database, create a project on Firebase and add the following to app.module.ts:
+## Firebase setup
 
-    export const firebaseConfig = {
-        apiKey: 'ABC123',
-        authDomain: 'yourapp.firebaseapp.com',
-        databaseURL: 'https://yourapp.firebaseio.com',
-        storageBucket: 'yourapp.appspot.com',
-        messagingSenderId: '01234'
-    };
+Create a [Firebase account](https://firebase.google.com/), create a new project, and copy the config code for your project.  
+
+Within the project folder, run:
+
+```
+cd src
+mkdir environments
+cd environments
+touch environments.ts
+touch environments.prod.ts
+```
+
+Open 'environments.ts' and add your Firebase config as follows:
+
+```javascript
+export const environment = {
+  production: false,
+  firebase: {
+    apiKey: "xxxx",
+    authDomain: "xxxxx",
+    databaseURL: "xxxxx",
+    projectId: "xxxxx",
+    storageBucket: "xxxx",
+    messagingSenderId: "xxxx"
+  }
+};
+```
+
+Open 'environments.prod.ts' and add your Firebase config as follows:
+
+```javascript
+export const environment = {
+  production: true,
+  firebase: {
+    apiKey: "xxxx",
+    authDomain: "xxxxx",
+    databaseURL: "xxxxx",
+    projectId: "xxxxx",
+    storageBucket: "xxxx",
+    messagingSenderId: "xxxx"
+  }
+};
 
 Install the necessary Firebase files using:
 
+```
     firebase init
+```
 
 ## Usage
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`.
