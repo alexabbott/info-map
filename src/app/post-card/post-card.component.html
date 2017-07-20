@@ -29,13 +29,13 @@
     </div>
   </span>
 
-
   <span *ngIf="post.tip">
     <div class="post-location" (click)="filterByLocation(post.location, post.coordinates)" *ngIf="filterBy !== 'location'">
       <md-icon>location_on</md-icon> {{ post.location }}
     </div>
-    <div class="post-user" (click)="filterByUser(post.user, post.userName)" *ngIf="filterBy !== 'user'" [ngClass]="{ 'float-left': filterBy === 'location' }">
+    <div class="post-user" (click)="filterByUser(post.user, post.userName)" [ngClass]="{ 'float-left': filterBy === 'location' }">
       <img src="{{ (users | async | get: post.user)?.photoURL }}"> {{ (users | async | get: post.user)?.name | lastNamePipe }}
+      <span *ngIf="post.visitDate" class="visit-date">Visited in {{ post.visitDate | date: 'MMM yyyy' }}</span>
     </div>
     <div class="clearfix"></div>
     <div class="post-tip">
