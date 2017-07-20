@@ -5,9 +5,10 @@
   background: $color-grey-lighter;
   box-sizing: border-box;
   height: 115px;
+  margin: 76px 5px 0 5px;
   overflow: hidden;
   transition-property: height;
-  width: 100%;
+  width: auto;
 
   @include tablet {
     margin: 140px 5px 0 5px;

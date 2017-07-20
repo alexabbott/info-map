@@ -47,6 +47,14 @@ md-toolbar {
       right: 3%;
     }
   }
+
+  .add-location {
+    top: 10px;
+
+    @include tablet {
+      display: none;
+    }
+  }
 }
 
 .logo {

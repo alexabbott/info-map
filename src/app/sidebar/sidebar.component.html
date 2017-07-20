@@ -1,5 +1,6 @@
 <md-toolbar class="fade-in-component">
   <span class="logo">Beyond Adventure Log</span>
+  <button md-raised-button (click)="addLocationMobile()" *ngIf="(af | async)?.uid" class="add-location alt">Add location</button>
   <img *ngIf="(af | async)?.uid" src="{{ (af | async)?.photoURL }}" class="profile-image" [mdMenuTriggerFor]="menu">
   <md-menu #menu="mdMenu">
     <button md-menu-item (click)="filterByCurrentUser()">My Profile</button>

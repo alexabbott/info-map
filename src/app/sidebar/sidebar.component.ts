@@ -261,4 +261,8 @@ export class SidebarComponent {
       this.globalService.coordinates.next(randomLocation.coordinates);
     });
   }
+
+  addLocationMobile() {
+    this.router.navigate(['/'], { queryParams: {search: this.displayName} });
+  }
 }
