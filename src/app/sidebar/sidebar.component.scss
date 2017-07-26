@@ -116,6 +116,7 @@ md-toolbar {
     border-right: 1px solid $color-grey;
     border-top: 0;
     height: 100vh;
+    overflow: hidden;
     position: static;
     width: 35%;
     z-index: 0;
@@ -186,10 +187,13 @@ md-toolbar {
 }
 
 .posts-container {
+  @extend %transition;
   background: $color-white;
   display: none;
+  height: calc(100vh - 130px);
   opacity: 0;
-  transition: opacity .3s ease-out, transform .3s ease-out;
+  overflow: scroll;
+  transition-property: opacity, height, transform;
 
   @include mobile {
     &.visible {
@@ -201,15 +205,21 @@ md-toolbar {
   @include tablet {
     display: block;
     opacity: 1;
+
+    &.logged-in {
+      height: calc(100vh - 260px);
+    }
+
+    &.form-open {
+      height: calc(100vh - 555px);
+    }
   }
 
   &.push-down {
-    height: calc(100vh - 125px);
     overflow: scroll;
     transform: translate3d(0, 5px, 0);
 
     @include tablet {
-      height: calc(100vh - 134px);
       transform: translate3d(0, 5px, 0);
     }
   }

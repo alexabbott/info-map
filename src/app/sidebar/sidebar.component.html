@@ -38,7 +38,7 @@
 
   <div
     class="posts-container"
-    [ngClass]="{ 'push-down': showReset || searchTerm, 'visible': showReset || searchTerm , 'push-down-more': !(af | async)?.uid }">
+    [ngClass]="{ 'push-down': showReset || searchTerm, 'visible': showReset || searchTerm , 'push-down-more': !(af | async)?.uid, 'logged-in': (af | async)?.uid, 'form-open': showForm }">
 
     <div class="text-center no-results" *ngIf="searchTerm && searchTerm !== '' && !showCurrentUserProfile && (filteredPosts | async | search: searchTerm)?.length === 0">No search results</div>
 

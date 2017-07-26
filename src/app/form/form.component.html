@@ -1,7 +1,7 @@
 <md-card class="form-container" [ngClass]="{'show-form': showForm === true, 'slide-up': slideFormUp === true }">
   <h3>Add a location</h3>
   <md-input-container class="md-block" floatPlaceholder="never" class="alt">
-    <input mdInput placeholder="&nbsp;City, Country" type="text" id="autocomplete" [(ngModel)]="newLocation" (focus)="showForm = true"/>
+    <input mdInput placeholder="&nbsp;City, Country" type="text" id="autocomplete" [(ngModel)]="newLocation" (focus)="showForm = true; globalService.showForm.next(true);"/>
   </md-input-container>
 
   <h3>When did you visit?</h3>

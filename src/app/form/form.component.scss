@@ -9,6 +9,7 @@
   overflow: hidden;
   transition-property: height;
   width: auto;
+  z-index: 2;
 
   @include tablet {
     margin: 140px 5px 0 5px;

@@ -1,0 +1,136 @@
+[debug] ----------------------------------------------------------------------
+[debug] Command:      /usr/local/Cellar/node@6/6.11.1/bin/node /usr/local/bin/firebase deploy
+[debug] CLI Version:  3.6.1
+[debug] Platform:     darwin
+[debug] Node Version: v6.11.1
+[debug] Time:         Wed Jul 26 2017 14:56:11 GMT-0400 (EDT)
+[debug] ----------------------------------------------------------------------
+[debug] 
+[debug] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] >>> HTTP REQUEST GET https://admin.firebase.com/v1/projects/bynd-map  
+ Wed Jul 26 2017 14:56:11 GMT-0400 (EDT)
+[debug] <<< HTTP RESPONSE 200
+[debug] >>> HTTP REQUEST GET https://admin.firebase.com/v1/database/bynd-map/tokens  
+ Wed Jul 26 2017 14:56:11 GMT-0400 (EDT)
+[debug] <<< HTTP RESPONSE 200
+[info] 
+[info] === Deploying to 'bynd-map'...
+[info] 
+[info] i  deploying database, functions, hosting
+[info] ✔  database: rules ready to deploy.
+[debug] > [functions] package.json contents: {
+  "name": "child-count-functions",
+  "description": "Count Child nodes Firebase Functions sample",
+  "dependencies": {
+    "firebase-admin": "^4.1.1",
+    "firebase-functions": "^0.5.1",
+    "algoliasearch": "^3.10.2"
+  }
+}
+[info] i  functions: ensuring necessary APIs are enabled...
+[info] i  runtimeconfig: ensuring necessary APIs are enabled...
+[debug] >>> HTTP REQUEST GET https://servicemanagement.googleapis.com/v1/services/cloudfunctions.googleapis.com/projectSettings/bynd-map?view=CONSUMER_VIEW  
+ Wed Jul 26 2017 14:56:13 GMT-0400 (EDT)
+[debug] >>> HTTP REQUEST GET https://servicemanagement.googleapis.com/v1/services/runtimeconfig.googleapis.com/projectSettings/bynd-map?view=CONSUMER_VIEW  
+ Wed Jul 26 2017 14:56:13 GMT-0400 (EDT)
+[debug] <<< HTTP RESPONSE 200
+[info] ✔  runtimeconfig: all necessary APIs are enabled
+[debug] <<< HTTP RESPONSE 200
+[info] ✔  functions: all necessary APIs are enabled
+[debug] >>> HTTP REQUEST GET https://appengine.googleapis.com/v1/apps/bynd-map  
+ Wed Jul 26 2017 14:56:14 GMT-0400 (EDT)
+[debug] >>> HTTP REQUEST GET https://apikeys.googleapis.com/v1/projects/bynd-map/apiKeys  
+ Wed Jul 26 2017 14:56:14 GMT-0400 (EDT)
+[debug] <<< HTTP RESPONSE 200
+[debug] <<< HTTP RESPONSE 200
+[info] i  functions: preparing functions directory for uploading...
+[debug] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/bynd-map/configs  
+ Wed Jul 26 2017 14:56:17 GMT-0400 (EDT)
+[debug] <<< HTTP RESPONSE 200
+[debug] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/bynd-map/configs/algolia/variables  
+ Wed Jul 26 2017 14:56:17 GMT-0400 (EDT)
+[debug] <<< HTTP RESPONSE 200
+[debug] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/bynd-map/configs/algolia/variables/api_key  
+ Wed Jul 26 2017 14:56:18 GMT-0400 (EDT)
+[debug] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/bynd-map/configs/algolia/variables/app_id  
+ Wed Jul 26 2017 14:56:18 GMT-0400 (EDT)
+[debug] <<< HTTP RESPONSE 200
+[debug] <<< HTTP RESPONSE 200
+[debug] > [functions] runtime config materialized as: {
+  "algolia": {
+    "api_key": "a21f5e878b7bd2ae08e17401ac4b81c9",
+    "app_id": "XECNM9HDRZ"
+  },
+  "firebase": {
+    "databaseURL": "https://bynd-map.firebaseio.com",
+    "storageBucket": "bynd-map.appspot.com",
+    "apiKey": "AIzaSyBhWGWps5VHAP2Y7i4L_FRzrSfz4auKajA",
+    "authDomain": "bynd-map.firebaseapp.com"
+  }
+}
+[debug] > [functions] parsed triggers: [
+  {
+    "eventTrigger": {
+      "resource": "projects/_/instances/bynd-map/refs/user-posts/{userid}/{postid}",
+      "eventType": "providers/google.firebase.database/eventTypes/ref.write"
+    },
+    "name": "countplaylistchange",
+    "entryPoint": "countplaylistchange"
+  },
+  {
+    "eventTrigger": {
+      "resource": "projects/_/instances/bynd-map/refs/users/{userid}/posts_count",
+      "eventType": "providers/google.firebase.database/eventTypes/ref.write"
+    },
+    "name": "recountlikes",
+    "entryPoint": "recountlikes"
+  },
+  {
+    "eventTrigger": {
+      "resource": "projects/_/instances/bynd-map/refs/location-posts/{locationid}/posts/{postid}",
+      "eventType": "providers/google.firebase.database/eventTypes/ref.write"
+    },
+    "name": "countlocationchange",
+    "entryPoint": "countlocationchange"
+  },
+  {
+    "eventTrigger": {
+      "resource": "projects/_/instances/bynd-map/refs/location-posts/{locationid}/posts_count",
+      "eventType": "providers/google.firebase.database/eventTypes/ref.write"
+    },
+    "name": "recountposts",
+    "entryPoint": "recountposts"
+  },
+  {
+    "eventTrigger": {
+      "resource": "projects/_/instances/bynd-map/refs/users/{userid}/postLikes/{likeid}",
+      "eventType": "providers/google.firebase.database/eventTypes/ref.write"
+    },
+    "name": "countlikeschange",
+    "entryPoint": "countlikeschange"
+  },
+  {
+    "eventTrigger": {
+      "resource": "projects/_/instances/bynd-map/refs/users/{userid}/likesCount",
+      "eventType": "providers/google.firebase.database/eventTypes/ref.write"
+    },
+    "name": "recountuserlikes",
+    "entryPoint": "recountuserlikes"
+  },
+  {
+    "eventTrigger": {
+      "resource": "projects/_/instances/bynd-map/refs/posts/{postid}/tip",
+      "eventType": "providers/google.firebase.database/eventTypes/ref.write"
+    },
+    "name": "indexentry",
+    "entryPoint": "indexentry"
+  },
+  {
+    "eventTrigger": {
+      "resource": "projects/_/instances/bynd-map/refs/search/queries/{queryid}",
+      "eventType": "providers/google.firebase.database/eventTypes/ref.write"
+    },
+    "name": "searchentry",
+    "entryPoint": "searchentry"
+  }
+]

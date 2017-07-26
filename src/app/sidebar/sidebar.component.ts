@@ -101,6 +101,7 @@ export class SidebarComponent {
     });
     globalService.showForm.subscribe(bool => {
       this.showForm = bool;
+      console.log('showForm', this.showForm);
     });
 
     globalService.filterBy.subscribe(filter => {
