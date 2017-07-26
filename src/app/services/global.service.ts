@@ -18,6 +18,7 @@ export class GlobalService {
   public postTip = new BehaviorSubject(null);
   public postLocation = new BehaviorSubject(null);
   public postCoordinates = new BehaviorSubject(null);
+  public postDate = new BehaviorSubject(null);
   public locationPosts = new BehaviorSubject(null);
   public filterBy = new BehaviorSubject(null);
   public currentLocation = new BehaviorSubject(null);
@@ -62,13 +63,17 @@ export class GlobalService {
   public updateUserId(id) {
     this.userId.next(id);
   }
+  public showAddForm() {
+    this.showForm.next(true);
+  }
   public closeForm() {
     this.showForm.next(false);
   }
-  public setFormValues(key, location, tip, coordinates) {
+  public setFormValues(key, location, coordinates, tip, date) {
     this.postKey.next(key);
     this.postLocation.next(location);
     this.postTip.next(tip);
     this.postCoordinates.next(coordinates);
+    this.postDate.next(date);
   }
 }

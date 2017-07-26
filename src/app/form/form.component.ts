@@ -67,6 +67,10 @@ export class FormComponent {
     globalService.postKey.subscribe(key => {
       this.postKey = key;
     });
+
+    globalService.postDate.subscribe(key => {
+      this.newDate = key;
+    });
   }
 
   hashCode(word: string) {

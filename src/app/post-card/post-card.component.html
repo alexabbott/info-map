@@ -59,7 +59,7 @@
       <div class="published-date">Posted {{ post.published | date: 'mediumDate' }}</div>
     </div>
     <div class="delete-post" *ngIf="post.user === (user | async)?.uid" >
-      <md-icon (click)="updatePost(post.$key, post.location, post.tip, post.coordinates)">mode_edit</md-icon>
+      <md-icon (click)="updatePost(post.$key, post.location, post.coordinates, post.tip, post.visitDate)">mode_edit</md-icon>
       <md-icon (click)="deletePost(post.$key, post.location)">delete</md-icon>
     </div>
   </span>

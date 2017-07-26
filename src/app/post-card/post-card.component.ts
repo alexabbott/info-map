@@ -55,9 +55,9 @@ export class PostCardComponent implements OnInit {
     }
   }
 
-  updatePost(key: string, location:string, tip:string, coordinates:string) {
-    this.globalService.closeForm();
-    this.globalService.setFormValues(key, location, tip, coordinates);
+  updatePost(key: string, location:string, coordinates:string, tip:string, date:string) {
+    this.globalService.showAddForm();
+    this.globalService.setFormValues(key, location, coordinates, tip, new Date(date));
   }
 
   deletePost(key: string, location: string) {
