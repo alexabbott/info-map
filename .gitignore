@@ -13,6 +13,7 @@
 
 # IDEs and editors
 /.idea
+*.idea
 .project
 .classpath
 .c9/
@@ -35,6 +36,15 @@
 npm-debug.log
 testem.log
 /typings
+env/
+bin/
+*.log
+*.swp
+*.pyc
+*.komodoproject
+/__init__.py
+/__init__.pyc
+.pyc
 
 # e2e
 /e2e/*.js
@@ -43,3 +53,4 @@ testem.log
 #System Files
 .DS_Store
 Thumbs.db
+
