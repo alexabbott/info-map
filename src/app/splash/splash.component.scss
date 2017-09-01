@@ -12,6 +12,10 @@
     width: 35vw;
     z-index: 99;
 
+    @include chromebase {
+        width: 100vw;
+    }
+
     &.show {
         @include mobile {
             display: none;

@@ -13,6 +13,7 @@ $color-gold: #ffd700;
 
 // screen size
 $screen-sm: 960px;
+$screen-md: 1100px;
 
 // transitions
 %transition {
@@ -28,6 +29,12 @@ $screen-sm: 960px;
 
 @mixin tablet {
   @media screen and (min-width: #{$screen-sm}) {
+    @content;
+  }
+}
+
+@mixin chromebase {
+  @media screen and (min-width: #{$screen-sm}) and (max-width: #{$screen-md}) {
     @content;
   }
 }

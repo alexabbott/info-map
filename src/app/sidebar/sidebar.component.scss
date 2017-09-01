@@ -122,6 +122,13 @@ md-toolbar {
     z-index: 0;
   }
 
+  @include chromebase {
+    height: 56vh;
+    position: fixed;
+    top: 44vh;
+    width: 100%;
+  }
+
   &:focus {
     outline: 0;
   }
@@ -149,6 +156,11 @@ md-toolbar {
     border-top: 0;
     top: 64px;
     width: 35%;
+  }
+
+  @include chromebase {
+    top: 50vh;
+    width: 100%;
   }
 
   .search-posts {
@@ -212,6 +224,20 @@ md-toolbar {
 
     &.form-open {
       height: calc(100vh - 555px);
+    }
+  }
+
+  @include chromebase {
+    display: block;
+    height: calc(56vh - 130px);
+    opacity: 1;
+
+    &.logged-in {
+      height: calc(56vh - 260px);
+    }
+
+    &.form-open {
+      height: calc(56vh - 555px);
     }
   }
 
