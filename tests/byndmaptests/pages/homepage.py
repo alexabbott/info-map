@@ -9,10 +9,10 @@ class HomePageLocators(object):
     LOGIN = (By.CSS_SELECTOR, 'login alt mat-raised-button')
     LOGO = (By.CSS_SELECTOR, '.header-logo')
     RANDOM_LOCATION_BTN = (By.CSS_SELECTOR, '.header-logo')
-    TOOLBAR = (By.CSS_SELECTOR, 'body > app-root > side-bar > md-toolbar > div > md-toolbar-row')
+    TOOLBAR = (By.CSS_SELECTOR, '.mat-toolbar-row >span.logo')
     HEADER_TITLE = (By.CLASS_NAME, 'logo')
     #SEARCH
-    SEARCH_FIELD = (By.XPATH, '//*[@id="md-input-1"]')
+    SEARCH_FIELD = (By.CSS_SELECTOR, 'input#md-input-1')
     SORT_POST_MENU = (By.CSS_SELECTOR, 'md-select')
     #search-sort mat-select ng-tns-c10-2 mat-primary ng-pristine ng-valid ng-touched
     ADD_LOCATION_FIELDS = (By.CSS_SELECTOR, '.mat-input-wrapper')
@@ -20,6 +20,12 @@ class HomePageLocators(object):
     #POSTS
     LIST_CONTAINER = (By.CLASS_NAME, 'full-list')
     POSTS = (By.CSS_SELECTOR, '#md-card.form-container.mat-card')
+
+    #Individual posts
+    CHOSEN_POST = (By.CSS_SELECTOR, '.mat-card')
+
+    #Search
+    ENTER_NEW_LOCATION = (By.CSS_SELECTOR, 'input#autocomplete')
 
 
 class HomePage(BasePage):
@@ -57,7 +63,14 @@ class HomePage(BasePage):
         element.clear()
         element.send_keys(term)
         element.send_keys(Keys.ENTER)
-        time.sleep(10)
+        time.sleep(1)
+
+    def search_for_newterm(self, term):
+        element = self.driver.find_element(*HomePageLocators.SEARCH_FIELD)
+        element.clear()
+        element.send_keys(term)
+        element.send_keys(Keys.ENTER)
+        time.sleep(2)
         # return self.driver.find_elements(*HomePageLocators.SEARCH_FEILD)
 
     def get_sort_menu(self):
@@ -66,7 +79,7 @@ class HomePage(BasePage):
     def get_location_field(self):
         return self.driver.find_element(*HomePageLocators.ADD_LOCATION_FIELDS)
 
-    def get_location_tile(self):
+    def get_location_title(self, param):
         return self.driver.find_element(*HomePageLocators.LOCATION_TITLE)
 
     def get_list_container(self):
@@ -74,4 +87,15 @@ class HomePage(BasePage):
 
     def get_list_of_post(self):
         return self.driver.find_elements(*HomePageLocators.POSTS)
+
+    # Get individual card
+    def get_card(self):
+        return self.driver.find_element(*HomePageLocators.CHOSEN_POST)
+
+
+    # def get_card_loc(self):
+    #     return self.driver.find_element(*HomePageLocators.POST_LOC)
+
+    def get_location_title(self, param):
+        pass
 
