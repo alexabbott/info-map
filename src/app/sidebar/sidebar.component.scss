@@ -252,9 +252,23 @@ header {
   &.push-down-more {
       transform: translate3d(0, 130px, 0);
 
+      @include tablet {
+        transform: translate3d(0, 85px, 0);
+      }
+
       @include chromebase {
         transform: translate3d(0, 15px, 0);
       }
+  }
+
+  @include tablet {
+    .full-list {
+      > span:first-of-type {
+        .post-card {
+          padding-top: 0;
+        }
+      }
+    }
   }
 }
 
