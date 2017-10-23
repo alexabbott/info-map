@@ -31,7 +31,6 @@ import { SidebarComponent } from './sidebar/sidebar.component';
 import { MapComponent } from './map/map.component';
 import { FormComponent } from './form/form.component';
 import { PostCardComponent } from './post-card/post-card.component';
-import { SplashComponent } from './splash/splash.component';
 import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
 
 // const firebaseAuthConfig = {
@@ -57,13 +56,12 @@ const appRoutes: Routes = [
     FormComponent,
     SearchPipe,
     PostCardComponent,
-    SplashComponent,
     SlugifyPipe,
     LastNamePipePipe,
     DeleteDialogComponent
   ],
   imports: [
-    AngularFireModule.initializeApp(environment.firebase, 'bynd-map'),
+    AngularFireModule.initializeApp(environment.firebase),
     AngularFireDatabaseModule, // imports firebase/database, only needed for database features
     AngularFireAuthModule, // imports firebase/auth, only needed for auth features
     BrowserModule,

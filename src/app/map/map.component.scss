@@ -12,12 +12,13 @@
     position: absolute !important;
     right: 0;
     top: 0;
-    width: 65%;
+    width: 100%;
+    z-index: -1;
   }
 
   @include chromebase {
-    height: calc(50vh - 64px);
-    top: 64px;
+    height: 50vh;
+    top: 0;
     width: 100%;
   }
 }

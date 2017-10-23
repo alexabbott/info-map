@@ -2,8 +2,8 @@
 $color-white: #fff;
 $color-black: #000;
 $color-main: #1c1c1f;
-$color-highlight: rgba(28, 106, 252, .9);
-$color-highlight-light: rgba(28, 106, 252, .75);
+$color-highlight: #0c6;
+$color-highlight-light: rgba(85, 252, 135, 0.75);
 $color-blue: #1c6afc;
 $color-grey: #999;
 $color-grey-mid: #777;
@@ -14,6 +14,10 @@ $color-gold: #ffd700;
 // screen size
 $screen-sm: 960px;
 $screen-md: 1100px;
+
+$bg-gradient: linear-gradient(to right, rgba(255,255,255,1) 57%,rgba(178,178,178,0) 100%);
+$bg-gradient-up: linear-gradient(to bottom, rgba(153,153,153,0) 0%,rgba(255,255,255,1) 2%);
+$bg-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ffffff',GradientType=1 );
 
 // transitions
 %transition {

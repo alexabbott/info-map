@@ -48,18 +48,42 @@ body {
 
 .mat-raised-button {
   background: $color-highlight;
+  border-radius: 0 !important;
+  text-transform: uppercase;
 
   &.alt {
-    background: $color-white;
+    background: transparent;
+    border: 2px solid $color-highlight;
   }
 }
 
 .mat-button-wrapper {
   color: $color-white;
+  text-transform: uppercase;
 }
 
 .mat-calendar-period-button .mat-button-wrapper {
   color: $color-grey;
+}
+
+.search-posts {
+  margin-bottom: 12px;
+
+  .mat-input-placeholder {
+    color: $color-white;
+  }
+
+  .mat-input-wrapper {
+    padding: 5px 0;
+  }
+
+  .mat-input-infix {
+    border-top: none;
+  }
+
+  .mat-input-underline {
+    display: none;
+  }
 }
 
 .alt .mat-button-wrapper {
@@ -67,6 +91,7 @@ body {
 }
 
 .mat-card {
+  box-shadow: none !important;
   border-radius: 6px !important;
 }
 

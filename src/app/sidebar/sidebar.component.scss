@@ -1,69 +1,14 @@
 @import '../../variables';
 
-md-toolbar {
-  background: $color-blue;
-  box-shadow: 0 3px 5px -1px rgba($color-black, .2);
-  box-sizing: border-box;
-  left: 0;
+.login-container {
   position: fixed;
-  top: 0;
-  width: 100%;
-  z-index: 4;
-
-  .header-logo {
-    background: $color-white;
-    border-radius: 50%;
-    cursor: pointer;
-    position: absolute;
-    left: 50%;
-    top: 0;
-    transform: translateX(-50%);
-    width: 70px;
-
-    @include tablet {
-      // pointer-events: none;
-      width: 90px;
-    }
-  }
-
-  button {
-    left: 4%;
-    position: absolute;
-    right: auto;
-    top: 10px;
-
-    @include tablet {
-      left: auto;
-      right: 9%;
-      top: 13px;
-    }
-  }
-
-  .login {
-    right: 7%;
-
-    @include tablet {
-      position: fixed;
-      right: 3%;
-    }
-  }
+  right: 20px;
+  top: 20px;
 
   .add-location {
-    top: 10px;
-
     @include tablet {
       display: none;
     }
-  }
-}
-
-.logo {
-  display: none;
-  color: $color-white;
-  font-size: 22px;
-
-  @include tablet {
-    display: block;
   }
 }
 
@@ -72,20 +17,38 @@ md-toolbar {
   border-radius: 50%;
   cursor: pointer;
   position: absolute;
-  right: 5%;
+  right: 0;
   top: 7px;
   transition-property: transform;
   width: 42px;
 
   @include tablet {
     position: fixed;
-    right: 3%;
+    right: 20px;
     top: 9px;
     width: 45px;
   }
 
   &:hover {
     transform: scale(1.1);
+  }
+}
+
+header {
+  padding: 30px;
+
+  h1 {
+    margin-top: 0;
+  }
+
+  img {
+    width: 80px;
+  }
+
+  .small-divider {
+    background: $color-black;
+    height: 3px;
+    width: 80px;
   }
 }
 
@@ -106,23 +69,25 @@ md-toolbar {
 
   @include mobile {
     &.full-height {
-      background: $color-white;
-      height: calc(100vh - 52px);
+      height: 100vh;
     }
   }
 
   @include tablet {
-    background: $color-white;
-    border-right: 1px solid $color-grey;
+    background: $bg-gradient;
+    filter: $bg-filter;
     border-top: 0;
     height: 100vh;
+    min-width: 450px;
     overflow: hidden;
     position: static;
     width: 35%;
-    z-index: 0;
+    z-index: 1;
   }
 
   @include chromebase {
+    background: $bg-gradient-up;
+    filter: $bg-filter;
     height: 56vh;
     position: fixed;
     top: 44vh;
@@ -140,33 +105,35 @@ md-toolbar {
 }
 
 .search-container {
-  background: $color-white;
-  border-top: 1px solid $color-highlight;
-  box-shadow: 0 3px 5px -1px rgba($color-black, .2);
+  background: transparent;
   box-sizing: border-box;
   display: block;
   left: 0;
+  padding: 0 30px;
   position: fixed;
   top: 56px;
   width: 100%;
   z-index: 1;
 
   @include tablet {
-    border-right: 1px solid $color-grey;
-    border-top: 0;
-    top: 64px;
+    min-width: 450px;
+    top: 164px;
     width: 35%;
   }
 
   @include chromebase {
-    top: 50vh;
+    top: 60vh;
     width: 100%;
   }
 
   .search-posts {
+    background: $color-highlight;
+    border-radius: 40px;
+    box-sizing: border-box;
+    color: $color-white;
     display: inline-block;
-    margin-left: 15px;
-    width: calc(68% - 75px);
+    padding: 0 25px;
+    width: 100%;
 
     md-icon {
       color: $color-grey;
@@ -179,29 +146,38 @@ md-toolbar {
     .mat-input-element {
       overflow: hidden;
       text-overflow: ellipsis;
-      width: calc(100% - 24px);
+      width: 100%;
     }
   }
 
-  .sort {
-    color: $color-grey;
-    cursor: pointer;
-    float: right;
-    margin: 20px 15px 0 0;
-    vertical-align: middle;
-  }
+  .sort-container {
+    text-align: center;
 
-  .search-sort {
-    float: right;
-    margin: 17px 15px 17px 0;
-    width: 35%;
+    .chip {
+      @extend %transition;
+      cursor: pointer;
+      display: inline-block;
+      background: lighten($color-grey, 20%);
+      border-radius: 40px;
+      color: $color-black;
+      font-size: .7em;
+      padding: 7px 10px;
+      text-transform: uppercase;
+      transition-property: background, color;
+
+      &.highlight-chip {
+        background: $color-highlight;
+        color: $color-white;
+      }
+    }
   }
 }
 
 .posts-container {
   @extend %transition;
-  background: $color-white;
+  background: $bg-gradient;
   display: none;
+  filter: $bg-filter;
   height: calc(100vh - 130px);
   opacity: 0;
   overflow: scroll;
@@ -289,7 +265,8 @@ md-toolbar {
 }
 
 .post-card {
-  background: $color-grey-lighter;
+  background: transparent;
+  box-shadow: none;
   font-size: 1em;
   margin: 8px 5px;
   padding-top: 1em;

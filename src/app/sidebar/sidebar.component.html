@@ -1,14 +1,12 @@
-<md-toolbar class="fade-in-component">
-  <span class="logo">Beyond Adventure Log</span>
+<div class="login-container fade-in-component">
   <button md-raised-button (click)="addLocationMobile()" *ngIf="(af | async)?.uid" class="add-location alt">Add location</button>
   <img *ngIf="(af | async)?.uid" src="{{ (af | async)?.photoURL }}" class="profile-image" [mdMenuTriggerFor]="menu">
   <md-menu #menu="mdMenu">
     <button md-menu-item (click)="filterByCurrentUser()">My Profile</button>
     <button md-menu-item (click)="logout()">Logout</button>
   </md-menu>
-  <img src="../../assets/worldy.svg" class="header-logo" (click)="showRandomLocation()">
   <button *ngIf="!(af | async)?.uid" md-raised-button (click)="login()" class="login alt">Login</button>
-</md-toolbar>
+</div>
 
 <md-sidenav
   class="md-sidenav-left fade-in-component"
@@ -19,6 +17,12 @@
   md-whiteframe="4"
   [ngClass]="{ 'full-height': showReset || searchTerm || showForm }">
 
+  <header>
+    <img src="../../assets/bynd-logo.svg">
+    <h1>Adventure Log</h1>
+    <div class="small-divider"></div>
+  </header>
+
   <add-form *ngIf="(af | async)?.uid"></add-form>
 
   <div class="clearfix"></div>
@@ -28,12 +32,32 @@
       <input mdInput placeholder="Search {{ searchLabel }}" [(ngModel)]="searchTerm" (focus)="globalService.closeForm()">
       <md-icon *ngIf="searchTerm && searchTerm !== ''" (click)="resetPosts()">close</md-icon>
     </md-input-container>
-    <md-select class="search-sort" [(ngModel)]="orderBy" (change)="globalService.closeForm()">
-      <md-option value="newestPosts" (click)="showNewestPosts()" [ngClass]="{ 'highlight-text': orderBy === 'newestPosts' }">Newest Posts</md-option>
-      <md-option value="popularPosts" (click)="showPopularPosts()" [ngClass]="{ 'highlight-text': orderBy === 'popularPosts' }">Popular Posts</md-option>
-      <md-option value="topUsers" (click)="showTopUsers()" [ngClass]="{ 'highlight-text': orderBy === 'topUsers' && globalService.filterBy.getValue() === 'topUsers' }">Top Users</md-option>
-      <md-option value="topDestinations" (click)="showTopDestinations()" [ngClass]="{ 'highlight-text': orderBy === 'topDestinations' && globalService.filterBy.getValue() === 'topDestinations' }">Top Destinations</md-option>
-    </md-select>
+    <div class="sort-container">
+      <div
+        class="chip"
+        (click)="showNewestPosts()"
+        [ngClass]="{ 'highlight-chip': orderBy === 'newestPosts' }">
+        Newest Logs
+      </div>
+      <div
+        class="chip"
+        (click)="showPopularPosts()"
+        [ngClass]="{ 'highlight-chip': orderBy === 'popularPosts' }">
+        Top Logs
+      </div>
+      <div
+        class="chip"
+        (click)="showTopUsers()"
+        [ngClass]="{ 'highlight-chip': orderBy === 'topUsers' && globalService.filterBy.getValue() === 'topUsers' }">
+        Top Users
+      </div>
+      <div
+        class="chip"
+        (click)="showTopDestinations()"
+        [ngClass]="{ 'highlight-chip': orderBy === 'topDestinations' && globalService.filterBy.getValue() === 'topDestinations' }">
+        Top Destinations
+      </div>
+    </div>
   </div>
 
   <div

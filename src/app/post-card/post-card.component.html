@@ -7,7 +7,7 @@
     <div class="user-info">
       {{ post.name | lastNamePipe }}
       <div class="post-count">
-        <md-icon>location_on</md-icon> {{ post.posts_count * -1 }} destination<span *ngIf="post.posts_count !== -1">s</span>
+        {{ post.posts_count * -1 }} destination<span *ngIf="post.posts_count !== -1">s</span>
       </div>
     </div>
     <div class="profile-button">
@@ -17,7 +17,7 @@
 
   <span *ngIf="post.posts">
     <div class="post-location" (click)="filterByLocation(post.$key, post.coordinates)">
-      <md-icon>location_on</md-icon> {{ post.$key }}
+      {{ post.$key }}
     </div>
     <div class="user-info">
       <div class="post-count user-counter">
@@ -31,11 +31,11 @@
 
   <span *ngIf="post.tip">
     <div class="post-location" (click)="filterByLocation(post.location, post.coordinates)" *ngIf="filterBy !== 'location'">
-      <md-icon>location_on</md-icon> {{ post.location }}
+      {{ post.location }}
     </div>
     <div class="post-user" (click)="filterByUser(post.user, post.userName)" [ngClass]="{ 'float-left': filterBy === 'location' }">
-      <img src="{{ (users | async | get: post.user)?.photoURL }}"> {{ (users | async | get: post.user)?.name | lastNamePipe }}
-      <span *ngIf="post.visitDate" class="visit-date">Visited in {{ post.visitDate | date: 'MMM yyyy' }}</span>
+      visited by <img src="{{ (users | async | get: post.user)?.photoURL }}"> {{ (users | async | get: post.user)?.name | lastNamePipe }}
+      <span *ngIf="post.visitDate">in {{ post.visitDate | date: 'MMM yyyy' }}</span>
     </div>
     <div class="clearfix"></div>
     <div class="post-tip">
@@ -56,7 +56,7 @@
         </md-icon>
       </span>
       <span *ngIf="!post.likesTotal && post.likesTotal !== 0">0</span>{{ post.likesTotal * -1 }} like<span *ngIf="post.likesTotal < -1 || post.likesTotal === 0 || !post.likesTotal">s</span>
-      <div class="published-date">Posted {{ post.published | date: 'mediumDate' }}</div>
+      <!-- <div class="published-date">Posted {{ post.published | date: 'mediumDate' }}</div> -->
     </div>
     <div class="delete-post" *ngIf="post.user === (user | async)?.uid" >
       <md-icon (click)="updatePost(post.$key, post.location, post.coordinates, post.tip, post.visitDate)">mode_edit</md-icon>

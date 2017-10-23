@@ -1,5 +1,6 @@
 {
   "projects": {
-    "default": "bynd-map"
+    "default": "world-map-30d06",
+    "world-map": "world-map-30d06"
   }
 }

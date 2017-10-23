@@ -2,13 +2,8 @@
 
 .post-card {
   @extend %transition;
-  padding-top: 60px;
   position: relative;
   transition-property: height;
-
-  &.reduce-padding {
-    padding-top: 0;
-  }
 }
 
 .post-name {
@@ -18,34 +13,12 @@
   width: 100%;
 }
 
-// .post-tag {
-//   background: $color-highlight;
-//   border-radius: 5px;
-//   color: $color-white;
-//   cursor: pointer;
-//   float: right;
-//   font-size: 12px;
-//   margin-top: -25px;
-//   padding: 3px 5px;
-// }
-
-.location-icon {
-  color: $color-highlight;
-}
-
 .post-location {
-  background: $color-highlight-light;
-  border-top-right-radius: 6px;
-  border-top-left-radius: 6px;
-  color: $color-white;
+  color: $color-highlight;
   cursor: pointer;
   display: block;
   font-size: 1em;
-  left: -24px;
-  position: absolute;
-  padding: 20px 25px 15px 25px;
-  top: -1em;
-  width: calc(100% - 2px);
+  padding: 20px 25px 8px 0;
 
   md-icon {
     color: $color-white;
@@ -67,17 +40,19 @@
 }
 
 .post-user {
+  color: $color-grey;
   cursor: pointer;
   float: left;
-  font-size: 1em;
-  margin-top: 10px;
+  font-style: italic;
+  font-size: .7em;
   width: 100%;
 
   img {
     border-radius: 50%;
+    height: 12px;
     margin-top: -3px;
     vertical-align: middle;
-    width: 30px;
+    width: 12px;
   }
 
   .visit-date {
@@ -90,8 +65,8 @@
 }
 
 .post-tip {
-  color: darken($color-grey, 20%);
-  padding: 10px 5px 0 5px;
+  color: $color-grey;
+  padding: 10px 5px 0 0;
 }
 
 .active {
