@@ -57,7 +57,7 @@ export class SidebarComponent {
     this.totalCurrentUserLikes = 0;
     this.currentUserPostCount = 0;
     this.currentUserLikedCount = 0;
-    this.searchLabel = 'destinations';
+    this.searchLabel = 'logs, users or destinations...';
 
     let me = this;
 
@@ -126,7 +126,7 @@ export class SidebarComponent {
             equalTo: uid
           }
         });
-        this.searchLabel = 'destinations';
+        this.searchLabel = 'logs, users or destinations...';
       }
     });
 
@@ -135,7 +135,7 @@ export class SidebarComponent {
       globalService.currentLocation = location;
       if (location) {
         this.showCurrentUserProfile = false;
-        this.searchLabel = 'destinations';
+        this.searchLabel = 'logs, users or destinations...';
         this.filteredPosts = db.list('/posts', {
           query: {
             orderByChild: 'location',
@@ -191,7 +191,7 @@ export class SidebarComponent {
     this.map.setZoom(3);
     this.searchTerm = '';
     this.router.navigate(['/'], { queryParams: {search: null} });
-    this.searchLabel = 'destinations';
+    this.searchLabel = 'logs, users or destinations...';
     this.orderBy = 'newestPosts';
   }
 
@@ -206,7 +206,7 @@ export class SidebarComponent {
   }
 
   showNewestPosts() {
-    this.searchLabel = 'destinations';
+    this.searchLabel = 'logs, users or destinations...';
     this.showReset = true;
     this.filteredPosts = this.db.list('/posts', {
       query: {
@@ -218,7 +218,7 @@ export class SidebarComponent {
   }
 
   showPopularPosts() {
-    this.searchLabel = 'destinations';
+    this.searchLabel = 'logs, users or destinations...';
     this.showReset = true;
     this.filteredPosts = this.db.list('/posts', {
       query: {

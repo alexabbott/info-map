@@ -4,6 +4,7 @@
 html,
 body {
   font-family: 'Roboto', Arial, sans-serif;
+  height: 100vh;
   margin: 0;
   overflow: hidden;
 }
@@ -92,7 +93,7 @@ body {
 
 .mat-card {
   box-shadow: none !important;
-  border-radius: 6px !important;
+  border-radius: 0 !important;
 }
 
 .grey-text .mat-button-wrapper {

@@ -1,23 +1,26 @@
 @import '../../variables';
 
 .form-container {
+  @extend %font-serif;
   @extend %transition;
-  background: transparent;
+  background: rgba(255,255,255,.9);
   box-sizing: border-box;
-  height: 115px;
-  margin: 76px 5px 0 5px;
+  height: 85px;
+  margin: 100px 0 0 0;
+  padding: 0 24px;
   overflow: hidden;
   transition-property: height;
   width: auto;
   z-index: 2;
 
   @include tablet {
+    background: transparent;
     margin: 120px 5px 0 5px;
     width: auto;
   }
 
   &.show-form {
-    height: 410px;
+    height: 380px;
   }
 
   &.slide-up {
@@ -28,7 +31,9 @@
     }
   }
 
+  h2,
   h3 {
+    color: $color-main;
     margin-bottom: 10px;
   }
 }

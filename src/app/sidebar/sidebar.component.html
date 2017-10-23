@@ -19,11 +19,11 @@
 
   <header>
     <img src="../../assets/bynd-logo.svg">
-    <h1>Adventure Log</h1>
-    <div class="small-divider"></div>
+    <h1 class="desktop-only">Adventure Log</h1>
+    <div class="small-divider desktop-only"></div>
   </header>
 
-  <add-form *ngIf="(af | async)?.uid"></add-form>
+  <add-form *ngIf="(af | async)?.uid && (af | async)?.email !== 'rhino@bynd.com'"></add-form>
 
   <div class="clearfix"></div>
 
@@ -31,6 +31,7 @@
     <md-input-container floatPlaceholder="never" class="search-posts">
       <input mdInput placeholder="Search {{ searchLabel }}" [(ngModel)]="searchTerm" (focus)="globalService.closeForm()">
       <md-icon *ngIf="searchTerm && searchTerm !== ''" (click)="resetPosts()">close</md-icon>
+      <md-icon *ngIf="!searchTerm || searchTerm === ''">search</md-icon>
     </md-input-container>
     <div class="sort-container">
       <div
@@ -62,7 +63,7 @@
 
   <div
     class="posts-container"
-    [ngClass]="{ 'push-down': showReset || searchTerm, 'visible': showReset || searchTerm , 'push-down-more': !(af | async)?.uid, 'logged-in': (af | async)?.uid, 'form-open': showForm }">
+    [ngClass]="{ 'push-down': showReset || searchTerm, 'visible': showReset || searchTerm , 'push-down-more': !(af | async)?.uid, 'logged-in': (af | async)?.uid && (af | async)?.email !== 'rhino@bynd.com', 'form-open': showForm }">
 
     <div class="text-center no-results" *ngIf="searchTerm && searchTerm !== '' && !showCurrentUserProfile && (filteredPosts | async | search: searchTerm)?.length === 0">No search results</div>
 

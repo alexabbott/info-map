@@ -2,8 +2,7 @@
 
 .map {
   float: right;
-  height: calc(100vh - 128px);
-  margin-top: 126px;
+  height: 100vh;
   width: 100%;
 
   @include tablet {
@@ -13,11 +12,11 @@
     right: 0;
     top: 0;
     width: 100%;
-    z-index: -1;
+    z-index: 0;
   }
 
   @include chromebase {
-    height: 50vh;
+    height: 60vh;
     top: 0;
     width: 100%;
   }
