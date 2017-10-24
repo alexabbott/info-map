@@ -58,6 +58,7 @@ export const environment = {
     messagingSenderId: "xxxx"
   }
 };
+```
 
 Install the necessary Firebase files using:
 
