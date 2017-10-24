@@ -24,7 +24,7 @@
         <md-icon class="user-icon">account_circle</md-icon> {{ post.posts_count * -1 }} user<span *ngIf="post.posts_count !== -1">s</span>
       </div>
     </div>
-    <div class="profile-button">
+    <div class="destination-button">
       <button md-button class="alt" (click)="filterByLocation(post.$key, post.coordinates)">View Destination</button>
     </div>
   </span>
@@ -34,7 +34,7 @@
       {{ post.location }}
     </div>
     <div class="post-user" (click)="filterByUser(post.user, post.userName)" [ngClass]="{ 'float-left': filterBy === 'location' }">
-      visited by <img src="{{ (users | async | get: post.user)?.photoURL }}"> {{ (users | async | get: post.user)?.name | lastNamePipe }}
+      <span *ngIf="filterBy !== 'location'">visited by </span><img src="{{ (users | async | get: post.user)?.photoURL }}"> {{ (users | async | get: post.user)?.name | lastNamePipe }}
       <span *ngIf="post.visitDate">in {{ post.visitDate | date: 'MMM yyyy' }}</span>
     </div>
     <div class="clearfix"></div>

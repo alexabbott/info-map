@@ -199,7 +199,7 @@ header {
 .posts-container {
   @extend %transition;
   display: none;
-  height: calc(100vh - 130px);
+  height: calc(100vh - 260px);
   opacity: 0;
   overflow: scroll;
   transition-property: opacity, height, transform;
@@ -219,11 +219,11 @@ header {
     opacity: 1;
 
     &.logged-in {
-      height: calc(100vh - 260px);
+      height: calc(100vh - 370px);
     }
 
     &.form-open {
-      height: calc(100vh - 555px);
+      height: calc(100vh - 670px);
     }
   }
 
@@ -275,7 +275,7 @@ header {
 .headline {
   @extend %font-serif;
   box-sizing: border-box;
-  color: $color-black;
+  color: $color-main;
   height: 78px;
   line-height: 78px;
   margin: 0 0 -2px 0;
@@ -289,11 +289,10 @@ header {
   }
 
   &.green {
-    background: $color-highlight;
-    color: $color-white;
+    color: $color-main;
 
     md-icon {
-      color: $color-white;
+      color: $color-highlight;
     }
   }
 

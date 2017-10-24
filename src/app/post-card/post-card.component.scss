@@ -49,10 +49,10 @@
 
   img {
     border-radius: 50%;
-    height: 12px;
-    margin-top: -3px;
+    height: 18px;
+    margin: -3px 0 0 3px;
     vertical-align: middle;
-    width: 12px;
+    width: 18px;
   }
 
   .visit-date {
@@ -138,6 +138,14 @@ md-icon {
 .profile-button {
   display: inline-block;
   float: right;
-  margin: 3px 20px 0 0;
+  margin: 15px 20px 0 0;
   width: 110px;
 }
+
+.destination-button {
+  display: inline-block;
+  float: right;
+  margin: -18px 20px 0 0;
+  width: 110px;
+}
+
