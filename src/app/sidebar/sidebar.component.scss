@@ -27,40 +27,12 @@
   @include tablet {
     position: fixed;
     right: 20px;
-    top: 9px;
+    top: 15px;
     width: 45px;
   }
 
   &:hover {
     transform: scale(1.1);
-  }
-}
-
-header {
-  left: 0;
-  padding: 30px;
-  position: fixed;
-  top: 0;
-
-  @include tablet {
-    position: static;
-  }
-
-  h1 {
-    @extend %font-serif;
-    font-size: 3em;
-    font-weight: 900;
-    margin: 0 0 15px 0;
-  }
-
-  img {
-    width: 80px;
-  }
-
-  .small-divider {
-    background: $color-black;
-    height: 3px;
-    width: 80px;
   }
 }
 
@@ -87,13 +59,13 @@ header {
   @include tablet {
     background: $bg-gradient;
     filter: $bg-filter;
-    border-top: 0;
     height: 100vh;
-    min-width: 450px;
+    min-width: 600px;
     overflow: hidden;
+    pointer-events: none;
     position: relative;
     top: 0;
-    width: 35%;
+    width: 40%;
   }
 
   @include chromebase {
@@ -109,6 +81,45 @@ header {
   &:focus {
     outline: 0;
   }
+}
+
+.sidenav-inner {
+  @include tablet {
+    height: 100vh;
+    max-width: 450px;
+    pointer-events: initial;
+    position: relative;
+    width: 100%;
+  }
+}
+
+header {
+  left: 0;
+  padding: 30px;
+  position: fixed;
+  top: 0;
+
+  @include tablet {
+    position: static;
+  }
+
+  h1 {
+    @extend %font-serif;
+    font-size: 3em;
+    font-weight: 900;
+    margin: 0 0 15px 0;
+  }
+
+  img {
+    width: 80px;
+  }
+
+}
+
+.divider {
+  background: $color-black;
+  height: 3px;
+  width: 80px;
 }
 
 .no-results {
@@ -128,8 +139,8 @@ header {
   z-index: 1;
 
   @include tablet {
-    min-width: 450px;
-    top: 164px;
+    max-width: 450px;
+    top: 162px;
     width: 35%;
   }
 
@@ -184,7 +195,7 @@ header {
       border-radius: 40px;
       color: $color-black;
       font-size: .7em;
-      padding: 7px 10px;
+      padding: 7px 9px;
       text-transform: uppercase;
       transition-property: background, color;
 
@@ -229,7 +240,7 @@ header {
 
   @include chromebase {
     display: block;
-    height: calc(56vh - 15px);
+    height: calc(56vh - 215px);
     opacity: 1;
 
     &.logged-in {
@@ -257,7 +268,7 @@ header {
       }
 
       @include chromebase {
-        transform: translate3d(0, 15px, 0);
+        transform: translate3d(0, 45px, 0);
       }
   }
 

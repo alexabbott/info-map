@@ -3,10 +3,17 @@
 
 html,
 body {
-  font-family: 'Roboto', Arial, sans-serif;
+  @extend %font-sans-serif;
   height: 100vh;
   margin: 0;
   overflow: hidden;
+}
+
+.mat-card,
+.mat-menu-item,
+.mat-button,
+.mat-raised-button {
+  @extend %font-sans-serif;
 }
 
 .clearfix {
@@ -53,7 +60,7 @@ body {
   text-transform: uppercase;
 
   &.alt {
-    background: transparent;
+    background: $color-white;
     border: 2px solid $color-highlight;
   }
 }

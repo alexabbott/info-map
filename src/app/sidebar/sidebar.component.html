@@ -17,107 +17,111 @@
   md-whiteframe="4"
   [ngClass]="{ 'full-height': showReset || searchTerm || showForm }">
 
-  <header>
-    <img src="../../assets/bynd-logo.svg">
-    <h1 class="desktop-only">Adventure Log</h1>
-    <div class="small-divider desktop-only"></div>
-  </header>
+    <div class="sidenav-inner">
 
-  <add-form *ngIf="(af | async)?.uid && (af | async)?.email !== 'rhino@bynd.com'"></add-form>
+      <header>
+        <img src="../../assets/bynd-logo.svg">
+        <h1 class="desktop-only">Adventure Log</h1>
+        <div class="divider desktop-only"></div>
+      </header>
 
-  <div class="clearfix"></div>
+      <add-form *ngIf="(af | async)?.uid && (af | async)?.email !== 'rhino@bynd.com'"></add-form>
 
-  <div class="search-container">
-    <md-input-container floatPlaceholder="never" class="search-posts">
-      <input mdInput placeholder="Search {{ searchLabel }}" [(ngModel)]="searchTerm" (focus)="globalService.closeForm()">
-      <md-icon *ngIf="searchTerm && searchTerm !== ''" (click)="resetPosts()">close</md-icon>
-      <md-icon *ngIf="!searchTerm || searchTerm === ''">search</md-icon>
-    </md-input-container>
-    <div class="sort-container">
-      <div
-        class="chip"
-        (click)="showNewestPosts()"
-        [ngClass]="{ 'highlight-chip': orderBy === 'newestPosts' }">
-        Newest Logs
+      <div class="clearfix"></div>
+
+      <div class="search-container">
+        <md-input-container floatPlaceholder="never" class="search-posts">
+          <input mdInput placeholder="Search {{ searchLabel }}" [(ngModel)]="searchTerm" (focus)="globalService.closeForm()">
+          <md-icon *ngIf="searchTerm && searchTerm !== ''" (click)="resetPosts()">close</md-icon>
+          <md-icon *ngIf="!searchTerm || searchTerm === ''">search</md-icon>
+        </md-input-container>
+        <div class="sort-container">
+          <div
+            class="chip"
+            (click)="showNewestPosts()"
+            [ngClass]="{ 'highlight-chip': orderBy === 'newestPosts' }">
+            Newest Logs
+          </div>
+          <div
+            class="chip"
+            (click)="showPopularPosts()"
+            [ngClass]="{ 'highlight-chip': orderBy === 'popularPosts' }">
+            Top Logs
+          </div>
+          <div
+            class="chip"
+            (click)="showTopUsers()"
+            [ngClass]="{ 'highlight-chip': orderBy === 'topUsers' && globalService.filterBy.getValue() === 'topUsers' }">
+            Top Users
+          </div>
+          <div
+            class="chip"
+            (click)="showTopDestinations()"
+            [ngClass]="{ 'highlight-chip': orderBy === 'topDestinations' && globalService.filterBy.getValue() === 'topDestinations' }">
+            Top Destinations
+          </div>
+        </div>
       </div>
+
       <div
-        class="chip"
-        (click)="showPopularPosts()"
-        [ngClass]="{ 'highlight-chip': orderBy === 'popularPosts' }">
-        Top Logs
-      </div>
-      <div
-        class="chip"
-        (click)="showTopUsers()"
-        [ngClass]="{ 'highlight-chip': orderBy === 'topUsers' && globalService.filterBy.getValue() === 'topUsers' }">
-        Top Users
-      </div>
-      <div
-        class="chip"
-        (click)="showTopDestinations()"
-        [ngClass]="{ 'highlight-chip': orderBy === 'topDestinations' && globalService.filterBy.getValue() === 'topDestinations' }">
-        Top Destinations
+        class="posts-container"
+        [ngClass]="{ 'push-down': showReset || searchTerm, 'visible': showReset || searchTerm , 'push-down-more': !(af | async)?.uid, 'logged-in': (af | async)?.uid && (af | async)?.email !== 'rhino@bynd.com', 'form-open': showForm }">
+
+        <div class="text-center no-results" *ngIf="searchTerm && searchTerm !== '' && !showCurrentUserProfile && (filteredPosts | async | search: searchTerm)?.length === 0">No search results</div>
+
+        <div *ngIf="!showCurrentUserProfile" class="full-list">
+          <h2 class="headline" *ngIf="(filterBy === 'user' || filterBy === 'location') && (filteredPosts | async | search: searchTerm)?.length > 0" [ngClass]="{'green': filterBy === 'location'}">
+            <span *ngIf="filterBy === 'user'"><img src="{{ (users | async | get: currentUserId)?.photoURL }}"> {{ currentUserName | lastNamePipe }}</span>
+            <div class="user-likes" *ngIf="filterBy === 'user'"><md-icon class="active">star</md-icon>
+              <span *ngIf="(users | async | get: currentUserId)?.likesCount">{{ (users | async | get: currentUserId)?.likesCount * -1 }}</span>
+              <span *ngIf="!(users | async | get: currentUserId)?.likesCount">0</span>
+              like<span *ngIf="(users | async | get: currentUserId)?.likesCount !== -1">s</span>
+            </div>
+            <div class="user-locations" *ngIf="filterBy === 'user'"><md-icon>location_on</md-icon> {{ (users | async | get: currentUserId)?.posts_count * -1 }} destinations</div>
+            <span *ngIf="filterBy === 'location'"><md-icon>location_on</md-icon> {{ globalService.currentLocation }}</span>
+            <!--<span *ngIf="filterBy === 'tag'"><img src="../../assets/tags/{{ globalService.currentTag | slugify }}.jpg"> {{ globalService.currentTag }}</span>-->
+          </h2>
+          <span *ngFor="let post of filteredPosts | async | search: searchTerm" >
+            <md-card class="post-card" *ngIf="post.posts_count || post.likes_count || post.tip">
+              <post-card [post]="post"></post-card>
+            </md-card>
+          </span>
+        </div>
+
+        <h2 class="headline" *ngIf="showCurrentUserProfile">
+          <img *ngIf="(af | async)?.uid" src="{{ (af | async)?.photoURL }}"> My Profile
+          <div class="user-likes"><md-icon class="active">star</md-icon>
+            <span *ngIf="(users | async | get: userId)?.likesCount">{{ (users | async | get: userId)?.likesCount * -1 }}</span>
+            <span *ngIf="!(users | async | get: userId)?.likesCount">0</span>
+            like<span *ngIf="(users | async | get: userId)?.likesCount !== -1">s</span>
+          </div>
+        </h2>
+        <md-tab-group *ngIf="showCurrentUserProfile">
+          <md-tab label="My Posts ({{ currentUserPostCount }})">
+            <div *ngIf="(userPosts | async)" class="my-posts">
+              <md-card *ngFor="let post of userPosts | async | search: searchTerm" class="post-card">
+                <post-card [post]="post.$key"></post-card>
+              </md-card>
+            </div>
+
+            <h5 class="text-center" *ngIf="(!(userPosts | async) || (userPosts | async)?.length === 0)">
+              You haven't created any posts!
+            </h5>
+          </md-tab>
+          <md-tab label="Liked Posts ({{ currentUserLikedCount }})">
+            <div *ngIf="(userLikedPosts | async)">
+              <md-card *ngFor="let post of userLikedPosts | async" class="post-card">
+                <post-card [post]="post.$key"></post-card>
+              </md-card>
+            </div>
+
+            <h5 class="text-center" *ngIf="(!(userLikedPosts | async) || (userLikedPosts | async)?.length === 0)">
+              You haven't liked any posts!
+            </h5>
+          </md-tab>
+        </md-tab-group>
+
       </div>
     </div>
-  </div>
-
-  <div
-    class="posts-container"
-    [ngClass]="{ 'push-down': showReset || searchTerm, 'visible': showReset || searchTerm , 'push-down-more': !(af | async)?.uid, 'logged-in': (af | async)?.uid && (af | async)?.email !== 'rhino@bynd.com', 'form-open': showForm }">
-
-    <div class="text-center no-results" *ngIf="searchTerm && searchTerm !== '' && !showCurrentUserProfile && (filteredPosts | async | search: searchTerm)?.length === 0">No search results</div>
-
-    <div *ngIf="!showCurrentUserProfile" class="full-list">
-      <h2 class="headline" *ngIf="(filterBy === 'user' || filterBy === 'location') && (filteredPosts | async | search: searchTerm)?.length > 0" [ngClass]="{'green': filterBy === 'location'}">
-        <span *ngIf="filterBy === 'user'"><img src="{{ (users | async | get: currentUserId)?.photoURL }}"> {{ currentUserName | lastNamePipe }}</span>
-        <div class="user-likes" *ngIf="filterBy === 'user'"><md-icon class="active">star</md-icon>
-          <span *ngIf="(users | async | get: currentUserId)?.likesCount">{{ (users | async | get: currentUserId)?.likesCount * -1 }}</span>
-          <span *ngIf="!(users | async | get: currentUserId)?.likesCount">0</span>
-          like<span *ngIf="(users | async | get: currentUserId)?.likesCount !== -1">s</span>
-        </div>
-        <div class="user-locations" *ngIf="filterBy === 'user'"><md-icon>location_on</md-icon> {{ (users | async | get: currentUserId)?.posts_count * -1 }} destinations</div>
-        <span *ngIf="filterBy === 'location'"><md-icon>location_on</md-icon> {{ globalService.currentLocation }}</span>
-        <!--<span *ngIf="filterBy === 'tag'"><img src="../../assets/tags/{{ globalService.currentTag | slugify }}.jpg"> {{ globalService.currentTag }}</span>-->
-      </h2>
-      <span *ngFor="let post of filteredPosts | async | search: searchTerm" >
-        <md-card class="post-card" *ngIf="post.posts_count || post.likes_count || post.tip">
-          <post-card [post]="post"></post-card>
-        </md-card>
-      </span>
-    </div>
-
-    <h2 class="headline" *ngIf="showCurrentUserProfile">
-      <img *ngIf="(af | async)?.uid" src="{{ (af | async)?.photoURL }}"> My Profile
-      <div class="user-likes"><md-icon class="active">star</md-icon>
-        <span *ngIf="(users | async | get: userId)?.likesCount">{{ (users | async | get: userId)?.likesCount * -1 }}</span>
-        <span *ngIf="!(users | async | get: userId)?.likesCount">0</span>
-        like<span *ngIf="(users | async | get: userId)?.likesCount !== -1">s</span>
-      </div>
-    </h2>
-    <md-tab-group *ngIf="showCurrentUserProfile">
-      <md-tab label="My Posts ({{ currentUserPostCount }})">
-        <div *ngIf="(userPosts | async)" class="my-posts">
-          <md-card *ngFor="let post of userPosts | async | search: searchTerm" class="post-card">
-            <post-card [post]="post.$key"></post-card>
-          </md-card>
-        </div>
-
-        <h5 class="text-center" *ngIf="(!(userPosts | async) || (userPosts | async)?.length === 0)">
-          You haven't created any posts!
-        </h5>
-      </md-tab>
-      <md-tab label="Liked Posts ({{ currentUserLikedCount }})">
-        <div *ngIf="(userLikedPosts | async)">
-          <md-card *ngFor="let post of userLikedPosts | async" class="post-card">
-            <post-card [post]="post.$key"></post-card>
-          </md-card>
-        </div>
-
-        <h5 class="text-center" *ngIf="(!(userLikedPosts | async) || (userLikedPosts | async)?.length === 0)">
-          You haven't liked any posts!
-        </h5>
-      </md-tab>
-    </md-tab-group>
-
-  </div>
 </md-sidenav>
+

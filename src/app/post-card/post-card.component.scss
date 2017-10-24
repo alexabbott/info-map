@@ -66,6 +66,7 @@
 
 .post-tip {
   color: $color-grey;
+  font-size: .9em;
   padding: 10px 5px 0 0;
 }
 
@@ -136,14 +137,12 @@ md-icon {
 }
 
 .profile-button {
-  display: inline-block;
   float: right;
   margin: 15px 20px 0 0;
   width: 110px;
 }
 
 .destination-button {
-  display: inline-block;
   float: right;
   margin: -18px 20px 0 0;
   width: 110px;

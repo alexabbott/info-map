@@ -230,7 +230,7 @@ export class SidebarComponent {
   }
 
   showTopUsers() {
-    this.searchLabel = 'users';
+    this.searchLabel = 'users...';
     this.showReset = true;
     this.globalService.filterBy.next('topUsers');
     this.filteredPosts = this.db.list('/users', {
@@ -243,7 +243,7 @@ export class SidebarComponent {
   }
 
   showTopDestinations() {
-    this.searchLabel = 'destinations';
+    this.searchLabel = 'destinations...';
     this.showReset = true;
     this.globalService.filterBy.next('topDestinations');
     this.filteredPosts = this.db.list('/location-posts', {
