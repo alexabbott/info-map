@@ -172,7 +172,9 @@ export class SidebarComponent {
   }
 
   login() {
-    this.afAuth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());;
+    this.afAuth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).then(() => {
+      location.reload();
+    });
   }
 
   logout() {

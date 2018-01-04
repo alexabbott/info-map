@@ -58,7 +58,7 @@ const appRoutes: Routes = [
     PostCardComponent,
     SlugifyPipe,
     LastNamePipePipe,
-    DeleteDialogComponent
+    DeleteDialogComponent,
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebase),

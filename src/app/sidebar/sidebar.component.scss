@@ -1,5 +1,37 @@
 @import '../../variables';
 
+.sign-in {
+  background: url('../../assets/map-bg.jpg');
+  background-size: cover;
+  height: 100vh;
+  left: 0;
+  position: fixed;
+  top: 0;
+  width: 100vw;
+  z-index: 2;
+
+  .button-container {
+    left: 50%;
+    position: fixed;
+    text-align: center;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 3;
+
+    img {
+      margin-left: -210px;
+      width: 120px;
+    }
+
+    h1 {
+      @extend %font-serif;
+      font-size: 3em;
+      font-weight: 900;
+      margin-top: -8px;
+    }
+  }
+}
+
 .login-container {
   position: fixed;
   right: 20px;

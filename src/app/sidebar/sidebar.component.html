@@ -5,7 +5,14 @@
     <button md-menu-item (click)="filterByCurrentUser()">My Profile</button>
     <button md-menu-item (click)="logout()">Logout</button>
   </md-menu>
-  <button *ngIf="!(af | async)?.uid" md-raised-button (click)="login()" class="login alt">Login</button>
+</div>
+
+<div class="sign-in" *ngIf="!(af | async)?.uid">
+  <div class="button-container">
+    <img src="../../assets/bynd-logo.svg">
+    <h1 class="desktop-only">Adventure Log</h1>
+    <button md-raised-button (click)="login()" class="login alt">Login</button>
+  </div>
 </div>
 
 <md-sidenav
